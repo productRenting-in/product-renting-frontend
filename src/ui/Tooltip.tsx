@@ -14,22 +14,15 @@ type TooltipPosition =
   | "right-start"
   | "right-end";
 
-interface TooltipProps {
+export interface TooltipProps {
   content: string | ReactNode;
-  children: ReactNode;
   position?: TooltipPosition;
   className?: string;
-  open?: boolean;
+  children: ReactNode;
 }
 
-const Tooltip = ({
-  content,
-  children,
-  position = "top",
-  className = "",
-  open,
-}: TooltipProps) => {
-  const positionClasses = {
+export const Tooltip = ({ content, position = "top", className = "", children }: TooltipProps) => {
+  const basePosition: Record<TooltipPosition, string> = {
     top: "tooltip-top",
     bottom: "tooltip-bottom",
     left: "tooltip-left",
@@ -41,31 +34,19 @@ const Tooltip = ({
     "left-start": "tooltip-left tooltip-start",
     "left-end": "tooltip-left tooltip-end",
     "right-start": "tooltip-right tooltip-start",
-    "right-end": "tooltip-right tooltip-end",
+    "right-end": "tooltip-right tooltip-end"
   };
 
-  const classes = [
-    "tooltip",
-    positionClasses[position],
-    open !== undefined ? (open ? "tooltip-open" : "") : "",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const tooltipClasses = ["tooltip", basePosition[position], className].filter(Boolean).join(" ");
 
-  return (
-    <div className={classes} data-tip={typeof content === "string" ? content : undefined}>
-      {typeof content === "string" ? (
-        children
-      ) : (
-        <>
-          {children}
-          <div className="tooltip-content">{content}</div>
-        </>
-      )}
+  return typeof content === "string" ? (
+    <div className={tooltipClasses} data-tip={content}>
+      {children}
+    </div>
+  ) : (
+    <div className={tooltipClasses}>
+      {children}
+      <div className="tooltip-content">{content}</div>
     </div>
   );
 };
-
-export default Tooltip;
-

@@ -1,56 +1,22 @@
 import { type ReactNode } from "react";
 
-type DividerVariant = "neutral" | "primary" | "secondary" | "accent";
+type DividerColor = "neutral" | "primary" | "secondary" | "accent" | "success" | "warning" | "info" | "error";
 
-interface DividerProps {
-  text?: string | ReactNode;
-  position?: "start" | "center" | "end";
-  variant?: DividerVariant;
+export interface DividerProps {
+  children?: ReactNode;
+  color?: DividerColor;
   vertical?: boolean;
+  align?: "start" | "center" | "end";
   className?: string;
 }
 
-const Divider = ({
-  text,
-  position = "center",
-  variant,
-  vertical = false,
-  className = "",
-}: DividerProps) => {
-  const variantClasses = {
-    neutral: "",
-    primary: "divider-primary",
-    secondary: "divider-secondary",
-    accent: "divider-accent",
-  };
-
-  const positionClasses = {
-    start: "divider-start",
-    center: "",
-    end: "divider-end",
-  };
+export const Divider = ({ children, color, vertical, align = "center", className = "" }: DividerProps) => {
+  const colorClass = color ? `divider-${color}` : "";
+  const alignClass = align === "start" ? "divider-start" : align === "end" ? "divider-end" : "";
 
   if (vertical) {
-    return (
-      <div
-        className={`divider divider-vertical ${variant ? variantClasses[variant] : ""} ${className}`}
-      >
-        {text}
-      </div>
-    );
+    return <div className={`divider divider-vertical ${colorClass} ${className}`}>{children}</div>;
   }
 
-  const classes = [
-    "divider",
-    text ? positionClasses[position] : "",
-    variant ? variantClasses[variant] : "",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  return <div className={classes}>{text}</div>;
+  return <div className={`divider ${colorClass} ${alignClass} ${className}`}>{children}</div>;
 };
-
-export default Divider;
-

@@ -1,24 +1,16 @@
-import { type SelectHTMLAttributes, forwardRef } from "react";
+import { forwardRef, type SelectHTMLAttributes } from "react";
 
-type SelectVariant =
-  | "neutral"
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
+type SelectVariant = "neutral" | "primary" | "secondary" | "accent" | "info" | "success" | "warning" | "error";
 
 type SelectSize = "xs" | "sm" | "md" | "lg";
 
-interface SelectOption {
+export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
 }
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "size"> {
   variant?: SelectVariant;
   size?: SelectSize;
   bordered?: boolean;
@@ -31,79 +23,57 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   placeholder?: string;
 }
 
-const Select = forwardRef<HTMLSelectElement, SelectProps>(
+const SelectBase = forwardRef<HTMLSelectElement, SelectProps>(
   (
     {
       variant,
       size = "md",
       bordered = true,
-      ghost = false,
+      ghost,
       label,
       helperText,
       error,
       options,
-      fullWidth = false,
+      fullWidth,
       placeholder,
       className = "",
-      ...props
+      ...rest
     },
     ref
   ) => {
-    const baseClasses = "select";
-
-    const variantClasses = {
-      neutral: "",
-      primary: "select-primary",
-      secondary: "select-secondary",
-      accent: "select-accent",
-      info: "select-info",
-      success: "select-success",
-      warning: "select-warning",
-      error: "select-error",
-    };
-
-    const sizeClasses = {
-      xs: "select-xs",
-      sm: "select-sm",
-      md: "",
-      lg: "select-lg",
-    };
+    const variantClass = variant && !error ? `select-${variant}` : "";
+    const sizeClass = size === "md" ? "" : `select-${size}`;
+    const errorClass = error ? "select-error" : "";
 
     const classes = [
-      baseClasses,
-      bordered ? "select-bordered" : "",
-      ghost ? "select-ghost" : "",
-      variant && !error ? variantClasses[variant] : "",
-      error ? "select-error" : "",
-      sizeClasses[size],
-      fullWidth ? "w-full" : "",
-      className,
+      "select",
+      bordered && "select-bordered",
+      ghost && "select-ghost",
+      variantClass,
+      errorClass,
+      sizeClass,
+      fullWidth && "w-full",
+      className
     ]
       .filter(Boolean)
       .join(" ");
 
     const selectElement = (
-      <select ref={ref} className={classes} {...props}>
+      <select ref={ref} className={classes} {...rest}>
         {placeholder && (
           <option value="" disabled>
             {placeholder}
           </option>
         )}
-        {options.map((option) => (
-          <option
-            key={option.value}
-            value={option.value}
-            disabled={option.disabled}
-          >
-            {option.label}
+        {options.map(opt => (
+          <option key={opt.value} value={opt.value} disabled={opt.disabled}>
+            {opt.label}
           </option>
         ))}
       </select>
     );
 
-    if (!label && !helperText && !error) {
-      return selectElement;
-    }
+    if (!label && !helperText && !error) return selectElement;
 
     return (
       <div className={`form-control ${fullWidth ? "w-full" : ""}`}>
@@ -115,9 +85,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {selectElement}
         {(helperText || error) && (
           <label className="label">
-            <span className={`label-text-alt ${error ? "text-error" : ""}`}>
-              {error || helperText}
-            </span>
+            <span className={`label-text-alt ${error ? "text-error" : ""}`}>{error || helperText}</span>
           </label>
         )}
       </div>
@@ -125,7 +93,6 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
   }
 );
 
-Select.displayName = "Select";
+SelectBase.displayName = "Select";
 
-export default Select;
-
+export default SelectBase;

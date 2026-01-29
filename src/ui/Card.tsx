@@ -1,132 +1,57 @@
-import { type ReactNode, type HTMLAttributes } from "react";
+import { type HTMLAttributes, type ReactNode } from "react";
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  children?: ReactNode;
-  title?: string;
-  image?: string;
-  imageAlt?: string;
-  imageBgColor?: string;
+export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+  title?: ReactNode;
   actions?: ReactNode;
-  badge?: ReactNode;
-  rating?: number;
-  reviews?: number;
-  price?: string | number;
-  originalPrice?: string | number;
-  bordered?: boolean;
-  shadow?: boolean | "sm" | "md" | "lg" | "xl";
+  imageSrc?: string;
+  imageAlt?: string;
+  imageTop?: boolean;
   compact?: boolean;
-  side?: boolean;
-  className?: string;
+  bordered?: boolean;
+  shadow?: string | boolean;
 }
 
-const Card = ({
-  children,
+export const Card = ({
   title,
-  image,
-  imageAlt = "",
-  imageBgColor,
   actions,
-  badge,
-  rating,
-  reviews,
-  price,
-  originalPrice,
-  bordered = false,
+  imageSrc,
+  imageAlt = "",
+  imageTop = true,
+  compact,
+  bordered,
   shadow = true,
-  compact = false,
-  side = false,
   className = "",
-  ...props
+  children,
+  ...rest
 }: CardProps) => {
-  const baseClasses = "card bg-base-100";
-
-  const shadowClasses = {
-    true: "shadow-xl",
-    sm: "shadow-sm",
-    md: "shadow-md",
-    lg: "shadow-lg",
-    xl: "shadow-xl",
-    false: "",
-  };
-
   const classes = [
-    baseClasses,
-    bordered ? "card-bordered" : "",
-    shadow ? shadowClasses[shadow === true ? "true" : shadow] : "",
-    compact ? "card-compact" : "",
-    side ? "card-side" : "",
-    className,
+    "card",
+    "bg-base-100",
+    "rounded-[24px]",
+    "overflow-hidden",
+    bordered && "border border-base-300",
+    shadow && "shadow-lg",
+    compact && "card-compact",
+    className
   ]
     .filter(Boolean)
     .join(" ");
 
-  const renderStars = (rating: number) => {
-    return (
-      <div className="flex items-center gap-1">
-        {[...Array(5)].map((_, index) => (
-          <span key={index} className="text-warning text-lg">
-            {index < rating ? "★" : "☆"}
-          </span>
-        ))}
-      </div>
-    );
-  };
+  const imageElement = imageSrc && (
+    <figure className="overflow-hidden">
+      <img src={imageSrc} alt={imageAlt} className="w-full object-cover" />
+    </figure>
+  );
 
   return (
-    <div className={classes} {...props}>
-      {image && (
-        <figure
-          className="relative"
-          style={imageBgColor ? { backgroundColor: imageBgColor } : undefined}
-        >
-          <img src={image} alt={imageAlt} className="w-full object-cover" />
-          {badge && (
-            <div className="absolute top-4 right-4">
-              {badge}
-            </div>
-          )}
-        </figure>
-      )}
+    <div className={classes} {...rest}>
+      {imageTop && imageElement}
       <div className="card-body">
-        {title && (
-          <div className="flex justify-between items-start">
-            <h2 className="card-title text-[#6B4423]">{title}</h2>
-            {badge && !image && badge}
-          </div>
-        )}
-
-        {rating !== undefined && (
-          <div className="flex items-center gap-2">
-            {renderStars(rating)}
-            {reviews !== undefined && (
-              <span className="text-base-content/60 text-sm">
-                {reviews} reviews
-              </span>
-            )}
-          </div>
-        )}
-
+        {title && <h2 className="card-title">{title}</h2>}
         {children}
-
-        {(price || originalPrice) && (
-          <div className="flex items-center gap-2 mt-2">
-            {price && (
-              <span className="text-3xl font-bold text-[#6B4423]">
-                ${price}
-              </span>
-            )}
-            {originalPrice && (
-              <span className="text-lg text-base-content/40 line-through">
-                ${originalPrice}
-              </span>
-            )}
-          </div>
-        )}
-
         {actions && <div className="card-actions justify-end">{actions}</div>}
       </div>
+      {!imageTop && imageElement}
     </div>
   );
 };
-
-export default Card;

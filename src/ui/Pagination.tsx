@@ -1,6 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
-
-interface PaginationProps {
+export interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
@@ -13,58 +11,57 @@ const Pagination = ({
   totalPages,
   onPageChange,
   showFirstLast = true,
-  className = "",
+  className = ""
 }: PaginationProps) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
-  const getVisiblePages = () => {
+  const visiblePages = () => {
     if (totalPages <= 7) return pages;
-    if (currentPage <= 3) return pages.slice(0, 5);
-    if (currentPage >= totalPages - 2)
-      return pages.slice(totalPages - 5);
+    if (currentPage <= 4) return pages.slice(0, 5);
+    if (currentPage >= totalPages - 3) return pages.slice(-5);
     return pages.slice(currentPage - 3, currentPage + 2);
+  };
+
+  const goTo = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    onPageChange(page);
   };
 
   return (
     <div className={`join ${className}`}>
       {showFirstLast && currentPage > 1 && (
-        <button
-          className="join-item btn btn-sm"
-          onClick={() => onPageChange(1)}
-        >
+        <button type="button" className="btn btn-sm join-item" onClick={() => goTo(1)}>
           First
         </button>
       )}
       <button
-        className="join-item btn btn-sm"
-        onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+        type="button"
+        className="btn btn-sm join-item"
         disabled={currentPage === 1}
+        onClick={() => goTo(currentPage - 1)}
       >
-        <ChevronLeft className="h-4 w-4" />
+        «
       </button>
-      {getVisiblePages().map((page) => (
+      {visiblePages().map(page => (
         <button
           key={page}
-          className={`join-item btn btn-sm ${
-            page === currentPage ? "btn-active" : ""
-          }`}
-          onClick={() => onPageChange(page)}
+          type="button"
+          className={`btn btn-sm join-item ${page === currentPage ? "btn-active" : ""}`}
+          onClick={() => goTo(page)}
         >
           {page}
         </button>
       ))}
       <button
-        className="join-item btn btn-sm"
-        onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+        type="button"
+        className="btn btn-sm join-item"
         disabled={currentPage === totalPages}
+        onClick={() => goTo(currentPage + 1)}
       >
-        <ChevronRight className="h-4 w-4" />
+        »
       </button>
       {showFirstLast && currentPage < totalPages && (
-        <button
-          className="join-item btn btn-sm"
-          onClick={() => onPageChange(totalPages)}
-        >
+        <button type="button" className="btn btn-sm join-item" onClick={() => goTo(totalPages)}>
           Last
         </button>
       )}
@@ -73,4 +70,3 @@ const Pagination = ({
 };
 
 export default Pagination;
-

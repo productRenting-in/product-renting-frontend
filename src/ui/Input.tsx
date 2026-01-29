@@ -1,106 +1,67 @@
-import { type InputHTMLAttributes, type ReactNode, forwardRef } from "react";
+import { forwardRef, type InputHTMLAttributes, type ReactNode } from "react";
+import type { Variant, Size } from "./Button";
 
-type InputVariant =
-  | "neutral"
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
-
-type InputSize = "xs" | "sm" | "md" | "lg";
-
-interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
-  variant?: InputVariant;
-  size?: InputSize;
-  /** Adds a border around the input */
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+  variant?: Variant;
+  size?: Size;
   bordered?: boolean;
-  /** Uses the `input-ghost` style from DaisyUI */
   ghost?: boolean;
   label?: string;
   helperText?: string;
   error?: string;
-  /** Icon rendered inside the input on the left */
   leftIcon?: ReactNode;
-  /** Icon rendered inside the input on the right */
   rightIcon?: ReactNode;
-  /** Make the input take full width of its container */
   fullWidth?: boolean;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       variant,
       size = "md",
       bordered = true,
-      ghost = false,
+      ghost,
       label,
       helperText,
       error,
       leftIcon,
       rightIcon,
-      fullWidth = false,
+      fullWidth,
       className = "",
-      ...props
+      ...rest
     },
     ref
   ) => {
-    const baseClasses = "input";
+    const variantClass = variant && !error ? `input-${variant}` : "";
+    const sizeClass = size === "md" ? "" : `input-${size}`;
+    const errorClass = error ? "input-error" : "";
 
-    const variantClasses: Record<InputVariant, string> = {
-      neutral: "",
-      primary: "input-primary",
-      secondary: "input-secondary",
-      accent: "input-accent",
-      info: "input-info",
-      success: "input-success",
-      warning: "input-warning",
-      error: "input-error",
-    };
-
-    const sizeClasses: Record<InputSize, string> = {
-      xs: "input-xs",
-      sm: "input-sm",
-      md: "",
-      lg: "input-lg",
-    };
-
-    const hasLeftIcon = Boolean(leftIcon);
-    const hasRightIcon = Boolean(rightIcon);
-
-    const paddingClasses = [
-      hasLeftIcon ? "pl-9" : "",
-      hasRightIcon ? "pr-9" : "",
-    ]
-      .filter(Boolean)
-      .join(" ");
+    const hasLeft = !!leftIcon;
+    const hasRight = !!rightIcon;
+    const padding = [hasLeft && "pl-9", hasRight && "pr-9"].filter(Boolean).join(" ");
 
     const classes = [
-      baseClasses,
-      bordered ? "input-bordered" : "",
-      ghost ? "input-ghost" : "",
-      variant && !error ? variantClasses[variant] : "",
-      error ? "input-error" : "",
-      sizeClasses[size],
-      fullWidth ? "w-full" : "",
-      paddingClasses,
-      className,
+      "input",
+      bordered && "input-bordered",
+      !bordered && "!border-0 focus:!border-0 focus:ring-0 focus:outline-none",
+      ghost && "input-ghost",
+      variantClass,
+      errorClass,
+      sizeClass,
+      fullWidth && "w-full",
+      "text-base-content",
+      "placeholder:text-base-content/60",
+      padding,
+      className
     ]
       .filter(Boolean)
       .join(" ");
 
-    const inputElement = (
-      <input ref={ref} className={classes} {...props} />
-    );
+    const inputElement = <input ref={ref} className={classes} {...rest} />;
 
-    const showWrapper = Boolean(label || helperText || error || hasLeftIcon || hasRightIcon);
+    const needsWrapper = label || helperText || error || hasLeft || hasRight;
 
-    if (!showWrapper) {
-      return inputElement;
-    }
+    if (!needsWrapper) return inputElement;
 
     return (
       <div className={`form-control ${fullWidth ? "w-full" : ""}`}>
@@ -110,23 +71,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           </label>
         )}
         <div className="relative">
-          {hasLeftIcon && (
-            <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-              {leftIcon}
-            </span>
+          {hasLeft && (
+            <span className="pointer-events-none absolute inset-y-0 left-3 z-10 flex items-center">{leftIcon}</span>
           )}
-          {hasRightIcon && (
-            <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-              {rightIcon}
-            </span>
+          {hasRight && (
+            <span className="pointer-events-none absolute inset-y-0 right-3 z-10 flex items-center">{rightIcon}</span>
           )}
           {inputElement}
         </div>
         {(helperText || error) && (
           <label className="label">
-            <span className={`label-text-alt ${error ? "text-error" : ""}`}>
-              {error || helperText}
-            </span>
+            <span className={`label-text-alt ${error ? "text-error" : ""}`}>{error || helperText}</span>
           </label>
         )}
       </div>
@@ -135,6 +90,3 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName = "Input";
-
-export default Input;
-

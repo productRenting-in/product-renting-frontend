@@ -1,43 +1,29 @@
+import type { HTMLAttributes } from "react";
+
+type LoadingStyle = "spinner" | "dots" | "ring" | "ball" | "bars" | "infinity";
+
 type LoadingSize = "xs" | "sm" | "md" | "lg";
 
-type LoadingType = "spinner" | "dots" | "ring" | "ball" | "bars" | "infinity";
-
-interface LoadingProps {
+export interface LoadingProps extends HTMLAttributes<HTMLSpanElement> {
+  variant?: LoadingStyle;
   size?: LoadingSize;
-  type?: LoadingType;
   text?: string;
-  className?: string;
 }
 
-const Loading = ({
-  size = "md",
-  type = "spinner",
-  text,
-  className = "",
-}: LoadingProps) => {
-  const sizeClasses = {
-    xs: "loading-xs",
-    sm: "loading-sm",
-    md: "",
-    lg: "loading-lg",
-  };
+export const Loading = ({ variant = "spinner", size = "md", text, className = "", ...rest }: LoadingProps) => {
+  const styleClass = `loading-${variant}`;
+  const sizeClass = size === "md" ? "" : `loading-${size}`;
 
-  const classes = [
-    "loading",
-    `loading-${type}`,
-    sizeClasses[size],
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const spinner = (
+    <span className={["loading", styleClass, sizeClass, className].filter(Boolean).join(" ")} {...rest} />
+  );
+
+  if (!text) return spinner;
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      <span className={classes}></span>
-      {text && <span className="text-sm text-base-content/70">{text}</span>}
+    <div className="flex items-center gap-2">
+      {spinner}
+      <span className="text-sm text-base-content/70">{text}</span>
     </div>
   );
 };
-
-export default Loading;
-

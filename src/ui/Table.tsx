@@ -1,13 +1,13 @@
 import { type ReactNode } from "react";
 
-interface TableColumn<T = Record<string, unknown>> {
-  key: string;
-  header: string | ReactNode;
+interface TableColumn<T> {
+  key: keyof T & string;
+  header: ReactNode;
   render?: (row: T, index: number) => ReactNode;
   className?: string;
 }
 
-interface TableProps<T = Record<string, unknown>> {
+export interface TableProps<T> {
   columns: TableColumn<T>[];
   data: T[];
   striped?: boolean;
@@ -17,38 +17,29 @@ interface TableProps<T = Record<string, unknown>> {
   emptyMessage?: string;
 }
 
-const Table = <T extends Record<string, unknown>>({
+export const Table = <T extends Record<string, unknown>>({
   columns,
   data,
-  striped = false,
+  striped,
   hover = true,
   size = "md",
   className = "",
-  emptyMessage = "No data available",
+  emptyMessage = "No data"
 }: TableProps<T>) => {
-  const sizeClasses = {
-    xs: "table-xs",
-    sm: "table-sm",
-    md: "",
-    lg: "table-lg",
-  };
+  const sizeClass = size === "md" ? "" : size === "lg" ? "table-lg" : `table-${size}`;
 
   const classes = [
     "table",
-    sizeClasses[size],
-    striped ? "table-zebra" : "",
-    hover ? "" : "table-no-hover",
-    className,
+    sizeClass,
+    striped && "table-zebra",
+    !hover && "table-pin-rows", // simple toggle; adjust if needed
+    className
   ]
     .filter(Boolean)
     .join(" ");
 
-  if (data.length === 0) {
-    return (
-      <div className="text-center py-8 text-base-content/70">
-        {emptyMessage}
-      </div>
-    );
+  if (!data.length) {
+    return <div className="py-6 text-center text-base-content/60">{emptyMessage}</div>;
   }
 
   return (
@@ -56,9 +47,9 @@ const Table = <T extends Record<string, unknown>>({
       <table className={classes}>
         <thead>
           <tr>
-            {columns.map((column) => (
-              <th key={column.key} className={column.className}>
-                {column.header}
+            {columns.map(col => (
+              <th key={col.key} className={col.className}>
+                {col.header}
               </th>
             ))}
           </tr>
@@ -66,11 +57,9 @@ const Table = <T extends Record<string, unknown>>({
         <tbody>
           {data.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              {columns.map((column) => (
-                <td key={column.key} className={column.className}>
-                  {column.render
-                    ? column.render(row, rowIndex)
-                    : (row[column.key] as React.ReactNode)}
+              {columns.map(col => (
+                <td key={col.key} className={col.className}>
+                  {col.render ? col.render(row, rowIndex) : (row[col.key] as ReactNode)}
                 </td>
               ))}
             </tr>
@@ -80,6 +69,3 @@ const Table = <T extends Record<string, unknown>>({
     </div>
   );
 };
-
-export default Table;
-

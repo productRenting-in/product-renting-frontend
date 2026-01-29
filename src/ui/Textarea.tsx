@@ -1,20 +1,9 @@
-import { type TextareaHTMLAttributes, forwardRef } from "react";
+import { forwardRef, type TextareaHTMLAttributes } from "react";
+import type { Variant, Size } from "./Button";
 
-type TextareaVariant =
-  | "neutral"
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
-
-type TextareaSize = "xs" | "sm" | "md" | "lg";
-
-interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  variant?: TextareaVariant;
-  size?: TextareaSize;
+export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  variant?: Variant;
+  size?: Size;
   bordered?: boolean;
   ghost?: boolean;
   label?: string;
@@ -23,62 +12,31 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   fullWidth?: boolean;
 }
 
-const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
-    {
-      variant,
-      size = "md",
-      bordered = true,
-      ghost = false,
-      label,
-      helperText,
-      error,
-      fullWidth = false,
-      className = "",
-      ...props
-    },
+    { variant, size = "md", bordered = true, ghost, label, helperText, error, fullWidth, className = "", ...rest },
     ref
   ) => {
-    const baseClasses = "textarea";
-
-    const variantClasses = {
-      neutral: "",
-      primary: "textarea-primary",
-      secondary: "textarea-secondary",
-      accent: "textarea-accent",
-      info: "textarea-info",
-      success: "textarea-success",
-      warning: "textarea-warning",
-      error: "textarea-error",
-    };
-
-    const sizeClasses = {
-      xs: "textarea-xs",
-      sm: "textarea-sm",
-      md: "",
-      lg: "textarea-lg",
-    };
+    const variantClass = variant && !error ? `textarea-${variant}` : "";
+    const sizeClass = size === "md" ? "" : `textarea-${size}`;
+    const errorClass = error ? "textarea-error" : "";
 
     const classes = [
-      baseClasses,
-      bordered ? "textarea-bordered" : "",
-      ghost ? "textarea-ghost" : "",
-      variant && !error ? variantClasses[variant] : "",
-      error ? "textarea-error" : "",
-      sizeClasses[size],
-      fullWidth ? "w-full" : "",
-      className,
+      "textarea",
+      bordered && "textarea-bordered",
+      ghost && "textarea-ghost",
+      variantClass,
+      errorClass,
+      sizeClass,
+      fullWidth && "w-full",
+      className
     ]
       .filter(Boolean)
       .join(" ");
 
-    const textareaElement = (
-      <textarea ref={ref} className={classes} {...props} />
-    );
+    const field = <textarea ref={ref} className={classes} {...rest} />;
 
-    if (!label && !helperText && !error) {
-      return textareaElement;
-    }
+    if (!label && !helperText && !error) return field;
 
     return (
       <div className={`form-control ${fullWidth ? "w-full" : ""}`}>
@@ -87,12 +45,10 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             <span className="label-text">{label}</span>
           </label>
         )}
-        {textareaElement}
+        {field}
         {(helperText || error) && (
           <label className="label">
-            <span className={`label-text-alt ${error ? "text-error" : ""}`}>
-              {error || helperText}
-            </span>
+            <span className={`label-text-alt ${error ? "text-error" : ""}`}>{error || helperText}</span>
           </label>
         )}
       </div>
@@ -101,6 +57,3 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 );
 
 Textarea.displayName = "Textarea";
-
-export default Textarea;
-

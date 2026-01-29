@@ -1,86 +1,35 @@
-type ProgressVariant =
-  | "neutral"
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
+import type { HTMLAttributes } from "react";
+import type { Variant } from "./Button";
 
-type ProgressSize = "xs" | "sm" | "md" | "lg";
-
-interface ProgressProps {
+export interface ProgressProps extends HTMLAttributes<HTMLProgressElement> {
   value: number;
   max?: number;
-  variant?: ProgressVariant;
-  size?: ProgressSize;
+  variant?: Variant;
   showValue?: boolean;
   label?: string;
-  className?: string;
 }
 
-const Progress = ({
+export const Progress = ({
   value,
   max = 100,
   variant = "primary",
-  size = "md",
-  showValue = false,
+  showValue,
   label,
   className = "",
+  ...rest
 }: ProgressProps) => {
-  const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
-
-  const variantClasses = {
-    neutral: "",
-    primary: "progress-primary",
-    secondary: "progress-secondary",
-    accent: "progress-accent",
-    info: "progress-info",
-    success: "progress-success",
-    warning: "progress-warning",
-    error: "progress-error",
-  };
-
-  const sizeClasses = {
-    xs: "progress-xs",
-    sm: "progress-sm",
-    md: "",
-    lg: "progress-lg",
-  };
-
-  const classes = [
-    "progress",
-    variantClasses[variant],
-    sizeClasses[size],
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const pct = Math.min(100, Math.max(0, (value / max) * 100));
+  const colorClass = `progress-${variant}`;
 
   return (
-    <div className="w-full">
+    <div className={className}>
       {label && (
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium">{label}</span>
-          {showValue && (
-            <span className="text-sm text-base-content/70">
-              {Math.round(percentage)}%
-            </span>
-          )}
+        <div className="mb-1 flex items-center justify-between text-sm">
+          <span>{label}</span>
+          {showValue && <span className="text-base-content/70">{Math.round(pct)}%</span>}
         </div>
       )}
-      <progress
-        className={classes}
-        value={value}
-        max={max}
-        aria-label={label || "Progress"}
-      >
-        {showValue && !label && `${Math.round(percentage)}%`}
-      </progress>
+      <progress className={["progress", colorClass, "w-full"].join(" ")} value={value} max={max} {...rest} />
     </div>
   );
 };
-
-export default Progress;
-

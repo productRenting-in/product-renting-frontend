@@ -1,95 +1,104 @@
-import { type ReactNode, useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { type HTMLAttributes, type ReactNode, useId, Children, isValidElement, cloneElement } from "react";
 
-interface CarouselProps {
-  children: ReactNode[];
-  autoPlay?: boolean;
-  interval?: number;
+type CarouselSnap = "start" | "center" | "end";
+type CarouselDirection = "horizontal" | "vertical";
+
+export interface CarouselProps extends HTMLAttributes<HTMLDivElement> {
+  /** Snap alignment of items. Default: start */
+  snap?: CarouselSnap;
+  /** Horizontal or vertical scroll. Default: horizontal */
+  direction?: CarouselDirection;
+  /** Render indicator buttons (1, 2, 3...) that scroll to each slide. Uses anchor links. */
   showIndicators?: boolean;
+  /** Render prev/next arrow buttons overlay. Uses anchor links. */
   showArrows?: boolean;
-  className?: string;
+  children: ReactNode;
 }
 
-const Carousel = ({
-  children,
-  autoPlay = false,
-  interval = 3000,
-  showIndicators = true,
-  showArrows = true,
+const snapClass: Record<CarouselSnap, string> = {
+  start: "",
+  center: "carousel-center",
+  end: "carousel-end"
+};
+
+export const Carousel = ({
+  snap = "start",
+  direction = "horizontal",
+  showIndicators = false,
+  showArrows = false,
   className = "",
+  children,
+  id: propId,
+  ...rest
 }: CarouselProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const generatedId = useId();
+  const baseId = (propId ?? generatedId).replace(/:/g, "");
+  const isVertical = direction === "vertical";
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
+  const childArray = Children.toArray(children).filter(
+    (child): child is React.ReactElement =>
+      isValidElement(child) && (child.type as { displayName?: string })?.displayName === "CarouselItem"
+  );
 
-  const goToPrevious = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? children.length - 1 : prev - 1
-    );
-  };
+  const hasItems = childArray.length > 0;
+  const itemsWithIds = hasItems
+    ? childArray.map((child, index) =>
+        cloneElement(child as React.ReactElement<{ id?: string }>, {
+          id: `${baseId}-item-${index}`
+        })
+      )
+    : children;
 
-  const goToNext = () => {
-    setCurrentIndex((prev) =>
-      prev === children.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  // Auto-play functionality
-  useEffect(() => {
-    if (autoPlay && children.length > 1) {
-      const timer = setInterval(() => {
-        goToNext();
-      }, interval);
-      return () => clearInterval(timer);
-    }
-  }, [autoPlay, interval, children.length]);
+  const containerClass = [
+    "carousel",
+    "rounded-box",
+    snapClass[snap],
+    isVertical && "carousel-vertical",
+    isVertical && "h-96",
+    className
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <div className={`carousel w-full relative ${className}`}>
-      <div className="carousel-item relative w-full">
-        {children.map((child, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-500 ${
-              index === currentIndex ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {child}
-          </div>
-        ))}
+    <div className="w-full">
+      <div id={baseId} className={containerClass} data-snap={snap} data-direction={direction} {...rest}>
+        {showArrows && hasItems
+          ? childArray.map((child, index) => {
+              const prevIndex = index === 0 ? childArray.length - 1 : index - 1;
+              const nextIndex = index === childArray.length - 1 ? 0 : index + 1;
+              const itemId = `${baseId}-item-${index}`;
+              const prevId = `${baseId}-item-${prevIndex}`;
+              const nextId = `${baseId}-item-${nextIndex}`;
+              const el = child as React.ReactElement<{ className?: string; children?: ReactNode }>;
+              const itemClass = ["carousel-item relative w-full", el.props?.className].filter(Boolean).join(" ");
+              return (
+                <div key={itemId} id={itemId} className={itemClass}>
+                  {el.props?.children}
+                  <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 justify-between">
+                    <a href={`#${prevId}`} className="btn btn-circle" aria-label="Previous slide">
+                      ‹
+                    </a>
+                    <a href={`#${nextId}`} className="btn btn-circle" aria-label="Next slide">
+                      ›
+                    </a>
+                  </div>
+                </div>
+              );
+            })
+          : itemsWithIds}
       </div>
-
-      {showArrows && children.length > 1 && (
-        <>
-          <button
-            className="btn btn-circle btn-sm absolute left-2 top-1/2 -translate-y-1/2"
-            onClick={goToPrevious}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button
-            className="btn btn-circle btn-sm absolute right-2 top-1/2 -translate-y-1/2"
-            onClick={goToNext}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </>
-      )}
-
-      {showIndicators && children.length > 1 && (
-        <div className="flex justify-center gap-2 mt-4">
-          {children.map((_, index) => (
-            <button
+      {showIndicators && hasItems && (
+        <div className="flex w-full justify-center gap-2 py-2">
+          {childArray.map((_, index) => (
+            <a
               key={index}
-              className={`btn btn-xs btn-circle ${
-                index === currentIndex ? "btn-primary" : "btn-ghost"
-              }`}
-              onClick={() => goToSlide(index)}
+              href={`#${baseId}-item-${index}`}
+              className="btn btn-xs"
+              aria-label={`Go to slide ${index + 1}`}
             >
               {index + 1}
-            </button>
+            </a>
           ))}
         </div>
       )}
@@ -97,5 +106,21 @@ const Carousel = ({
   );
 };
 
-export default Carousel;
+export interface CarouselItemProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode;
+}
 
+const CarouselItemComponent = ({ children, className = "", ...rest }: CarouselItemProps) => {
+  const classes = ["carousel-item", className].filter(Boolean).join(" ");
+  return (
+    <div className={classes} {...rest}>
+      {children}
+    </div>
+  );
+};
+
+CarouselItemComponent.displayName = "CarouselItem";
+
+export const CarouselItem = CarouselItemComponent;
+
+Carousel.Item = CarouselItem;

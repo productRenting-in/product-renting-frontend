@@ -1,77 +1,27 @@
-import { type InputHTMLAttributes, forwardRef } from "react";
+import { forwardRef, type InputHTMLAttributes } from "react";
+import type { Variant, Size } from "./Button";
 
-type CheckboxVariant =
-  | "neutral"
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
-
-type CheckboxSize = "xs" | "sm" | "md" | "lg";
-
-interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
-  variant?: CheckboxVariant;
-  size?: CheckboxSize;
+export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+  variant?: Variant;
+  size?: Size;
   label?: string;
-  indeterminate?: boolean;
 }
 
-const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  (
-    {
-      variant = "primary",
-      size = "md",
-      label,
-      indeterminate = false,
-      className = "",
-      ...props
-    },
-    ref
-  ) => {
-    const baseClasses = "checkbox";
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+  ({ variant = "primary", size = "md", label, className = "", ...rest }, ref) => {
+    const colorClass = variant ? `checkbox-${variant}` : "";
+    const sizeClass = size === "md" ? "" : `checkbox-${size}`;
 
-    const variantClasses = {
-      neutral: "",
-      primary: "checkbox-primary",
-      secondary: "checkbox-secondary",
-      accent: "checkbox-accent",
-      info: "checkbox-info",
-      success: "checkbox-success",
-      warning: "checkbox-warning",
-      error: "checkbox-error",
-    };
+    const classes = ["checkbox", colorClass, sizeClass, className].filter(Boolean).join(" ");
 
-    const sizeClasses = {
-      xs: "checkbox-xs",
-      sm: "checkbox-sm",
-      md: "",
-      lg: "checkbox-lg",
-    };
+    const control = <input ref={ref} type="checkbox" className={classes} {...rest} />;
 
-    const classes = [
-      baseClasses,
-      variantClasses[variant],
-      sizeClasses[size],
-      className,
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-    const checkboxElement = (
-      <input ref={ref} type="checkbox" className={classes} {...props} />
-    );
-
-    if (!label) {
-      return checkboxElement;
-    }
+    if (!label) return control;
 
     return (
       <div className="form-control">
-        <label className="label cursor-pointer justify-start gap-4">
-          {checkboxElement}
+        <label className="label cursor-pointer justify-start gap-3">
+          {control}
           <span className="label-text">{label}</span>
         </label>
       </div>
@@ -80,6 +30,3 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 );
 
 Checkbox.displayName = "Checkbox";
-
-export default Checkbox;
-

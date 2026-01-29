@@ -1,75 +1,27 @@
-import { type InputHTMLAttributes, forwardRef } from "react";
+import { forwardRef, type InputHTMLAttributes } from "react";
+import type { Variant, Size } from "./Button";
 
-type RadioVariant =
-  | "neutral"
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
-
-type RadioSize = "xs" | "sm" | "md" | "lg";
-
-interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
-  variant?: RadioVariant;
-  size?: RadioSize;
+export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+  variant?: Variant;
+  size?: Size;
   label?: string;
 }
 
-const Radio = forwardRef<HTMLInputElement, RadioProps>(
-  (
-    {
-      variant = "primary",
-      size = "md",
-      label,
-      className = "",
-      ...props
-    },
-    ref
-  ) => {
-    const baseClasses = "radio";
+export const Radio = forwardRef<HTMLInputElement, RadioProps>(
+  ({ variant = "primary", size = "md", label, className = "", ...rest }, ref) => {
+    const colorClass = variant ? `radio-${variant}` : "";
+    const sizeClass = size === "md" ? "" : `radio-${size}`;
 
-    const variantClasses = {
-      neutral: "",
-      primary: "radio-primary",
-      secondary: "radio-secondary",
-      accent: "radio-accent",
-      info: "radio-info",
-      success: "radio-success",
-      warning: "radio-warning",
-      error: "radio-error",
-    };
+    const classes = ["radio", colorClass, sizeClass, className].filter(Boolean).join(" ");
 
-    const sizeClasses = {
-      xs: "radio-xs",
-      sm: "radio-sm",
-      md: "",
-      lg: "radio-lg",
-    };
+    const control = <input ref={ref} type="radio" className={classes} {...rest} />;
 
-    const classes = [
-      baseClasses,
-      variantClasses[variant],
-      sizeClasses[size],
-      className,
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-    const radioElement = (
-      <input ref={ref} type="radio" className={classes} {...props} />
-    );
-
-    if (!label) {
-      return radioElement;
-    }
+    if (!label) return control;
 
     return (
       <div className="form-control">
-        <label className="label cursor-pointer justify-start gap-4">
-          {radioElement}
+        <label className="label cursor-pointer justify-start gap-3">
+          {control}
           <span className="label-text">{label}</span>
         </label>
       </div>
@@ -78,6 +30,3 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
 );
 
 Radio.displayName = "Radio";
-
-export default Radio;
-

@@ -1,83 +1,28 @@
-import { type InputHTMLAttributes, forwardRef } from "react";
+import { forwardRef, type InputHTMLAttributes } from "react";
+import type { Variant, Size } from "./Button";
 
-type ToggleVariant =
-  | "neutral"
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
-
-type ToggleSize = "xs" | "sm" | "md" | "lg";
-
-interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
-  variant?: ToggleVariant;
-  size?: ToggleSize;
+export interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+  variant?: Variant;
+  size?: Size;
   label?: string;
-  labelPosition?: "left" | "right";
 }
 
-const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
-  (
-    {
-      variant = "primary",
-      size = "md",
-      label,
-      labelPosition = "right",
-      className = "",
-      ...props
-    },
-    ref
-  ) => {
-    const baseClasses = "toggle";
+export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
+  ({ variant = "primary", size = "md", label, className = "", ...rest }, ref) => {
+    const colorClass = variant ? `toggle-${variant}` : "";
+    const sizeClass = size === "md" ? "" : `toggle-${size}`;
 
-    const variantClasses = {
-      neutral: "",
-      primary: "toggle-primary",
-      secondary: "toggle-secondary",
-      accent: "toggle-accent",
-      info: "toggle-info",
-      success: "toggle-success",
-      warning: "toggle-warning",
-      error: "toggle-error",
-    };
+    const classes = ["toggle", colorClass, sizeClass, className].filter(Boolean).join(" ");
 
-    const sizeClasses = {
-      xs: "toggle-xs",
-      sm: "toggle-sm",
-      md: "",
-      lg: "toggle-lg",
-    };
+    const control = <input ref={ref} type="checkbox" className={classes} {...rest} />;
 
-    const classes = [
-      baseClasses,
-      variantClasses[variant],
-      sizeClasses[size],
-      className,
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-    const toggleElement = (
-      <input ref={ref} type="checkbox" className={classes} {...props} />
-    );
-
-    if (!label) {
-      return toggleElement;
-    }
+    if (!label) return control;
 
     return (
       <div className="form-control">
-        <label className="label cursor-pointer justify-start gap-4">
-          {labelPosition === "left" && (
-            <span className="label-text">{label}</span>
-          )}
-          {toggleElement}
-          {labelPosition === "right" && (
-            <span className="label-text">{label}</span>
-          )}
+        <label className="label cursor-pointer justify-start gap-3">
+          {control}
+          <span className="label-text">{label}</span>
         </label>
       </div>
     );
@@ -85,6 +30,3 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
 );
 
 Toggle.displayName = "Toggle";
-
-export default Toggle;
-

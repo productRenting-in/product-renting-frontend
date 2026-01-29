@@ -1,91 +1,64 @@
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 
-type ButtonVariant =
-  | "neutral"
-  | "ghost"
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
+export type Variant = "neutral" | "primary" | "secondary" | "accent" | "info" | "success" | "warning" | "error";
 
-type ButtonSize = "xs" | "sm" | "md" | "lg";
+export type Size = "xs" | "sm" | "md" | "lg";
 
-type ButtonType = "solid" | "outline" | "ghost" | "link";
+type ButtonStyle = "solid" | "outline" | "ghost" | "link";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  buttonType?: ButtonType;
-  loading?: boolean;
-  disabled?: boolean;
-  icon?: ReactNode;
+  variant?: Variant;
+  size?: Size;
+  styleType?: ButtonStyle;
   fullWidth?: boolean;
-  className?: string;
+  loading?: boolean;
+  iconLeft?: ReactNode;
+  iconRight?: ReactNode;
 }
 
-const Button = ({
+export const Button = ({
   children,
-  variant = "neutral",
+  variant = "primary",
   size = "md",
-  buttonType = "solid",
-  loading = false,
-  disabled = false,
-  icon,
-  fullWidth = false,
+  styleType = "solid",
+  fullWidth,
+  loading,
+  iconLeft,
+  iconRight,
   className = "",
-  ...props
+  disabled,
+  ...rest
 }: ButtonProps) => {
-  const baseClasses = "btn";
+  const colorClass = `btn-${variant}`;
+  const sizeClass = size === "md" ? "" : `btn-${size}`;
 
-  const variantClasses = {
-    neutral: "btn-neutral",
-    primary: "btn-primary",
-    secondary: "btn-secondary",
-    accent: "btn-accent",
-    info: "btn-info",
-    success: "btn-success",
-    warning: "btn-warning",
-    error: "btn-error",
-  };
-
-  const sizeClasses = {
-    xs: "btn-xs",
-    sm: "btn-sm",
-    md: "",
-    lg: "btn-lg",
-  };
-
-  const typeClasses = {
-    solid: "",
-    outline: "btn-outline",
-    ghost: "btn-ghost",
-    link: "btn-link",
-  };
+  const styleClass =
+    styleType === "outline"
+      ? `btn-outline ${colorClass}`
+      : styleType === "ghost"
+        ? "btn-ghost"
+        : styleType === "link"
+          ? "btn-link"
+          : colorClass;
 
   const classes = [
-    baseClasses,
-    buttonType !== "solid" ? typeClasses[buttonType] : variantClasses[variant],
-    buttonType === "outline" ? variantClasses[variant] : "",
-    sizeClasses[size],
-    fullWidth ? "btn-block" : "",
-    loading ? "btn-disabled" : "",
-    className,
+    "btn",
+    styleClass,
+    sizeClass,
+    fullWidth && "btn-block",
+    (disabled || loading) && "btn-disabled",
+    loading && "loading",
+    className
   ]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <button className={classes} disabled={disabled || loading} {...props}>
-      {loading && <span className="loading loading-spinner"></span>}
-      {icon && !loading && icon}
+    <button className={classes} disabled={disabled || loading} {...rest}>
+      {iconLeft && !loading && <span className="mr-1">{iconLeft}</span>}
       {children}
+      {iconRight && !loading && <span className="ml-1">{iconRight}</span>}
     </button>
   );
 };
-
-export default Button;
-

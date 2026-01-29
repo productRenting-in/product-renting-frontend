@@ -1,73 +1,32 @@
 import { type ReactNode } from "react";
+import type { Variant, Size } from "./Button";
 
-type BadgeVariant =
-  | "neutral"
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "info"
-  | "success"
-  | "warning"
-  | "error"
-  | "ghost";
-
-type BadgeSize = "xs" | "sm" | "md" | "lg";
-
-interface BadgeProps {
+export interface BadgeProps {
   children: ReactNode;
-  variant?: BadgeVariant;
-  size?: BadgeSize;
+  variant?: Variant | "ghost";
+  size?: Size;
   outline?: boolean;
-  icon?: ReactNode;
+  iconLeft?: ReactNode;
   className?: string;
 }
 
-const Badge = ({
+export const Badge = ({
   children,
   variant = "neutral",
   size = "md",
-  outline = false,
-  icon,
-  className = "",
+  outline,
+  iconLeft,
+  className = ""
 }: BadgeProps) => {
-  const baseClasses = "badge";
+  const variantClass = variant === "ghost" ? "badge-ghost" : `badge-${variant}`;
+  const sizeClass = size === "md" ? "" : `badge-${size}`;
 
-  const variantClasses = {
-    neutral: "badge-neutral",
-    primary: "badge-primary",
-    secondary: "badge-secondary",
-    accent: "badge-accent",
-    info: "badge-info",
-    success: "badge-success",
-    warning: "badge-warning",
-    error: "badge-error",
-    ghost: "badge-ghost",
-  };
-
-  const sizeClasses = {
-    xs: "badge-xs",
-    sm: "badge-sm",
-    md: "",
-    lg: "badge-lg",
-  };
-
-  const classes = [
-    baseClasses,
-    variantClasses[variant],
-    sizeClasses[size],
-    outline ? "badge-outline" : "",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const classes = ["badge", variantClass, sizeClass, outline && "badge-outline", className].filter(Boolean).join(" ");
 
   return (
     <span className={classes}>
-      {icon && <span className="mr-1">{icon}</span>}
+      {iconLeft && <span className="mr-1">{iconLeft}</span>}
       {children}
     </span>
   );
 };
-
-export default Badge;
-

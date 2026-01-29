@@ -1,55 +1,36 @@
 import { type ReactNode, useState } from "react";
 
-interface AccordionItemProps {
-  title: string;
+export interface AccordionItemProps {
+  id: string;
+  title: ReactNode;
   children: ReactNode;
   defaultOpen?: boolean;
-  icon?: ReactNode;
   className?: string;
 }
 
-const AccordionItem = ({
-  title,
-  children,
-  defaultOpen = false,
-  icon,
-  className = "",
-}: AccordionItemProps) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
-  return (
-    <div className={`collapse collapse-arrow bg-base-200 ${className}`}>
-      <input
-        type="checkbox"
-        checked={isOpen}
-        onChange={(e) => setIsOpen(e.target.checked)}
-      />
-      <div className="collapse-title text-xl font-medium flex items-center gap-2">
-        {icon && icon}
-        {title}
-      </div>
-      <div className="collapse-content">{children}</div>
-    </div>
-  );
-};
-
-interface AccordionProps {
-  children: ReactNode;
+export interface AccordionProps {
+  items: AccordionItemProps[];
   className?: string;
-  allowMultiple?: boolean;
 }
 
-const Accordion = ({
-  children,
-  className = "",
-  allowMultiple = false,
-}: AccordionProps) => {
+export const Accordion = ({ items, className = "" }: AccordionProps) => {
+  const [openId, setOpenId] = useState<string | null>(() => items.find(i => i.defaultOpen)?.id ?? null);
+
   return (
     <div className={`join join-vertical w-full ${className}`}>
-      {children}
+      {items.map(item => {
+        const isOpen = openId === item.id;
+        return (
+          <div
+            key={item.id}
+            className={`collapse collapse-arrow bg-base-100 ${isOpen ? "collapse-open" : "collapse-close"}`}
+          >
+            <input type="radio" name="ds-accordion" checked={isOpen} onChange={() => setOpenId(item.id)} />
+            <div className="collapse-title text-base font-medium">{item.title}</div>
+            <div className="collapse-content">{item.children}</div>
+          </div>
+        );
+      })}
     </div>
   );
 };
-
-export { Accordion, AccordionItem };
-
