@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import cartReducer from "./slices/cartSlice";
 
 export const store = configureStore({
   reducer: {
-    // Add your reducers here
+    cart: cartReducer
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware(),
   devTools: import.meta.env.MODE !== "production"

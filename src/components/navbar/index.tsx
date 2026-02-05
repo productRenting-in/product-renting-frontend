@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, User2 } from "lucide-react";
+import { useAppSelector } from "../../app/hooks";
+import CartDropdown from "../cart/CartDropdown";
 import { Badge, Button, Input } from "../../ui";
 
 const Navbar = () => {
+  const cartQuantity = useAppSelector(state => state.cart.items.reduce((sum, item) => sum + item.quantity, 0));
+
   return (
     <header className="sticky top-0 z-50 border-b border-secondary/20 bg-secondary text-secondary-content backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4">
@@ -39,17 +43,26 @@ const Navbar = () => {
             <Search className="h-5 w-5" />
           </Button>
 
-          <div className="indicator">
-            <Badge className="indicator-item badge-error badge-xs text-xs">1</Badge>
-            <Button
-              type="button"
-              styleType="link"
-              size="sm"
-              className="px-1 text-base-100/90 no-underline hover:no-underline hover:bg-transparent min-h-0 h-auto"
-              aria-label="Cart"
-            >
-              <ShoppingCart className="h-5 w-5" />
-            </Button>
+          <div className="relative group py-2">
+            <div className="indicator inline-block">
+              {cartQuantity > 0 && (
+                <Badge className="indicator-item badge-error badge-xs text-xs">
+                  {cartQuantity > 99 ? "99+" : cartQuantity}
+                </Badge>
+              )}
+              <Button
+                type="button"
+                styleType="link"
+                size="sm"
+                className="px-1 text-base-100/90 no-underline hover:no-underline hover:bg-transparent min-h-0 h-auto"
+                aria-label="Cart"
+              >
+                <ShoppingCart className="h-5 w-5" />
+              </Button>
+            </div>
+            <div className="absolute right-0 top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-150 pointer-events-none group-hover:pointer-events-auto">
+              <CartDropdown />
+            </div>
           </div>
 
           <Button

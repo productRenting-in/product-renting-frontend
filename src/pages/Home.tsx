@@ -1,3 +1,5 @@
+import { useAppDispatch } from "../app/hooks";
+import { addToCart } from "../app/slices/cartSlice";
 import Hero from "../components/home/Hero";
 import CategoriesSection from "../components/home/CategoriesSection";
 import Footer from "../components/footer";
@@ -29,13 +31,27 @@ const CUSTOMIZE_WITH_US_SUBCATEGORIES = [
 ];
 
 const Home = () => {
+  const dispatch = useAppDispatch();
+
   return (
     <div className="flex min-h-screen flex-col bg-base-200">
       <main className="flex-1">
         <Hero />
-        <CategoriesSection title="Rent from Us" subcategories={RENT_FROM_US_SUBCATEGORIES} />
-        <CategoriesSection title="Plan & Decorate" subcategories={PLAN_A_DECOR_SUBCATEGORIES} />
-        <CategoriesSection title="Customize with Us" subcategories={CUSTOMIZE_WITH_US_SUBCATEGORIES} />
+        <CategoriesSection
+          title="Rent from Us"
+          subcategories={RENT_FROM_US_SUBCATEGORIES}
+          onAddToCart={item => dispatch(addToCart(item))}
+        />
+        <CategoriesSection
+          title="Plan & Decorate"
+          subcategories={PLAN_A_DECOR_SUBCATEGORIES}
+          onAddToCart={item => dispatch(addToCart(item))}
+        />
+        <CategoriesSection
+          title="Customize with Us"
+          subcategories={CUSTOMIZE_WITH_US_SUBCATEGORIES}
+          onAddToCart={item => dispatch(addToCart(item))}
+        />
       </main>
       <Footer />
     </div>
