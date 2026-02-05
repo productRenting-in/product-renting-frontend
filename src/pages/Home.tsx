@@ -40,16 +40,19 @@ const Home = () => {
         <CategoriesSection
           title="Rent from Us"
           subcategories={RENT_FROM_US_SUBCATEGORIES}
+          sectionId="rent-products"
           onAddToCart={item => dispatch(addToCart(item))}
         />
         <CategoriesSection
           title="Plan & Decorate"
           subcategories={PLAN_A_DECOR_SUBCATEGORIES}
+          sectionId="plan-decor"
           onAddToCart={item => dispatch(addToCart(item))}
         />
         <CategoriesSection
           title="Customize with Us"
           subcategories={CUSTOMIZE_WITH_US_SUBCATEGORIES}
+          sectionId="customization"
           onAddToCart={item => dispatch(addToCart(item))}
         />
       </main>

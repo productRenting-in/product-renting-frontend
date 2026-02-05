@@ -65,15 +65,17 @@ const Navbar = () => {
             </div>
           </div>
 
-          <Button
-            type="button"
-            styleType="link"
-            size="sm"
-            className="px-1 text-base-100/90 no-underline hover:no-underline hover:bg-transparent min-h-0 h-auto"
-            aria-label="Account"
-          >
-            <User2 className="h-5 w-5" />
-          </Button>
+          <Link to="/login">
+            <Button
+              type="button"
+              styleType="link"
+              size="sm"
+              className="px-1 text-base-100/90 no-underline hover:no-underline hover:bg-transparent min-h-0 h-auto"
+              aria-label="Account"
+            >
+              <User2 className="h-5 w-5" />
+            </Button>
+          </Link>
         </div>
       </div>
     </header>

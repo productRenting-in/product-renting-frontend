@@ -116,7 +116,7 @@ const CartDropdown = () => {
         </div>
         <div className="p-8 flex flex-col items-center justify-center text-center">
           <div className="rounded-full bg-base-200 p-4 mb-3">
-            <ShoppingBag className="h-8 w-8 text-base-content/40" />
+            <ShoppingBag className="h-8 w-8 text-base-content" />
           </div>
           <p className="text-sm text-base-content/70">Your cart is empty.</p>
           <p className="mt-1 text-xs text-base-content/50">Add items from the categories below.</p>

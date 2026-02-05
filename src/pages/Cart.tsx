@@ -115,7 +115,7 @@ const Cart = () => {
         </div>
         <h1 className="text-2xl font-bold text-base-content">Your cart is empty</h1>
         <p className="mt-2 text-base-content/70">Add items from the home page to get started.</p>
-        <Link to="/" className="btn btn-primary mt-6">
+        <Link to="/" className="btn btn-secondary mt-6">
           Continue shopping
         </Link>
       </div>

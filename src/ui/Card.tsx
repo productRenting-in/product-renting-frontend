@@ -9,6 +9,7 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title">
   compact?: boolean;
   bordered?: boolean;
   shadow?: string | boolean;
+  bodyClassName?: string;
 }
 
 export const Card = ({
@@ -20,6 +21,7 @@ export const Card = ({
   compact,
   bordered,
   shadow = true,
+  bodyClassName,
   className = "",
   children,
   ...rest
@@ -46,7 +48,7 @@ export const Card = ({
   return (
     <div className={classes} {...rest}>
       {imageTop && imageElement}
-      <div className="card-body">
+      <div className={["card-body", bodyClassName].filter(Boolean).join(" ")}>
         {title && <h2 className="card-title">{title}</h2>}
         {children}
         {actions && <div className="card-actions justify-end">{actions}</div>}

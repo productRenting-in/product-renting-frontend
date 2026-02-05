@@ -26,9 +26,14 @@ const categories: Category[] = [
   }
 ];
 
-import React from "react";
-
 const HeroCategories = () => {
+  const handleClick = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <Card shadow="xl" bordered={true} title="" className="h-full flex flex-col">
       <Heading level="h3" className="mb-4">
@@ -39,7 +44,8 @@ const HeroCategories = () => {
           <button
             key={category.id}
             type="button"
-            className="flex items-center gap-3 rounded-xl bg-base-200 px-3 py-3 text-left transition-colors hover:bg-base-300"
+            onClick={() => handleClick(category.id)}
+            className="flex items-center gap-3 rounded-xl bg-base-200 px-3 py-3 text-left transition-colors hover:bg-base-300 focus-visible:outline-none"
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-base-100 text-2xl">
               <span aria-hidden>{category.icon}</span>
