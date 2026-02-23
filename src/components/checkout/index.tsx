@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { type CartItem, removeFromCart, setQuantity } from "../../app/slices/cartSlice";
-import { Button } from "../../ui";
+import { Button, Heading, Text } from "../../ui";
 
 const DEFAULT_PRICE = 129;
 
@@ -58,8 +58,12 @@ const CartItemRow = ({ item }: { item: CartItem }) => {
         className="h-20 w-20 shrink-0 rounded-xl object-cover bg-base-200 ring-1 ring-base-300/50"
       />
       <div className="min-w-0 flex-1">
-        <p className="font-semibold text-base-content">{item.productName}</p>
-        <p className="mt-0.5 text-sm text-base-content/60">{formatPrice(price)} each</p>
+        <Text weight="semibold" className="text-base-content">
+          {item.productName}
+        </Text>
+        <Text size="sm" className="mt-0.5 text-base-content/60">
+          {formatPrice(price)} each
+        </Text>
         <div className="mt-3 flex items-center gap-2">
           <Button
             type="button"
@@ -97,7 +101,9 @@ const CartItemRow = ({ item }: { item: CartItem }) => {
         </div>
       </div>
       <div className="shrink-0 text-right">
-        <p className="text-base font-semibold text-primary tabular-nums">{formatPrice(lineTotal)}</p>
+        <Text weight="semibold" variant="primary" className="tabular-nums">
+          {formatPrice(lineTotal)}
+        </Text>
       </div>
     </li>
   );
@@ -113,8 +119,10 @@ const Checkout = () => {
         <div className="rounded-full bg-base-200 p-6 inline-block mb-4">
           <ShoppingBag className="h-12 w-12 text-base-content" />
         </div>
-        <h1 className="text-2xl font-bold text-base-content">Your cart is empty</h1>
-        <p className="mt-2 text-base-content/70">Add items from the home page to get started.</p>
+        <Heading level="h4" className="text-2xl text-base-content">
+          Your cart is empty
+        </Heading>
+        <Text className="mt-2 text-base-content/70">Add items from the home page to get started.</Text>
         <Link to="/" className="btn btn-secondary mt-6">
           Continue shopping
         </Link>
@@ -124,10 +132,12 @@ const Checkout = () => {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-base-content">Your cart</h1>
-      <p className="mt-1 text-sm text-base-content/70">
+      <Heading level="h4" className="text-2xl text-base-content">
+        Your cart
+      </Heading>
+      <Text size="sm" className="mt-1 text-base-content/70">
         {items.length} {items.length === 1 ? "item" : "items"}
-      </p>
+      </Text>
 
       <ul className="mt-6 space-y-4">
         {items.map(item => (
@@ -137,8 +147,12 @@ const Checkout = () => {
 
       <div className="mt-6 rounded-2xl border border-base-200 bg-base-100 p-5 shadow-sm">
         <div className="flex items-center justify-between gap-4">
-          <span className="text-base font-semibold text-base-content">Total</span>
-          <span className="text-xl font-bold text-primary tabular-nums">{formatPrice(total)}</span>
+          <Text as="span" weight="semibold" className="text-base-content">
+            Total
+          </Text>
+          <Text as="span" size="xl" weight="bold" variant="primary" className="tabular-nums">
+            {formatPrice(total)}
+          </Text>
         </div>
       </div>
 

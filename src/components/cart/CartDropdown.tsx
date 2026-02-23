@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { removeFromCart, setQuantity, type CartItem } from "../../app/slices/cartSlice";
-import { Button } from "../../ui";
+import { Button, Heading, Text } from "../../ui";
 
 const DEFAULT_PRICE = 129;
 
@@ -58,16 +58,20 @@ const CartDropdownItem = ({ item }: { item: CartItem }) => {
         className="h-14 w-14 shrink-0 rounded-xl object-cover bg-base-200 ring-1 ring-base-300/50"
       />
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium text-base-content line-clamp-2 leading-snug">{item.productName}</p>
-        <p className="mt-0.5 text-xs text-base-content/60">{formatPrice(price)} each</p>
+        <Text size="sm" weight="medium" className="text-base-content line-clamp-2 leading-snug">
+          {item.productName}
+        </Text>
+        <Text size="xs" className="mt-0.5 text-base-content/60">
+          {formatPrice(price)} each
+        </Text>
         <div className="mt-2 flex items-center gap-2">
           <Button
             type="button"
-            size="xs"
-            styleType="ghost"
-            className="btn-circle min-h-7 h-7 w-7 p-0 text-base-content/70 hover:text-base-content hover:bg-base-200"
+            variant="secondary"
+            size="sm"
             aria-label="Decrease quantity"
             onClick={() => handleQuantityChange(-1)}
+            className="h-7 w-7 p-0 rounded-full"
           >
             <Minus className="h-3.5 w-3.5" />
           </Button>
@@ -76,28 +80,30 @@ const CartDropdownItem = ({ item }: { item: CartItem }) => {
           </span>
           <Button
             type="button"
-            size="xs"
-            styleType="ghost"
-            className="btn-circle min-h-7 h-7 w-7 p-0 text-base-content/70 hover:text-base-content hover:bg-base-200"
+            variant="secondary"
+            size="sm"
             aria-label="Increase quantity"
             onClick={() => handleQuantityChange(1)}
+            className="h-7 w-7 p-0 rounded-full"
           >
             <Plus className="h-3.5 w-3.5" />
           </Button>
           <Button
             type="button"
-            size="xs"
-            styleType="ghost"
-            className="btn-circle min-h-7 h-7 w-7 p-0 text-error hover:text-error hover:bg-error/10"
+            size="sm"
+            styleType="link"
             aria-label="Remove from cart"
             onClick={() => dispatch(removeFromCart(item.id))}
+            className="h-7 w-7 p-0 rounded-full"
           >
-            <Trash2 className="h-3.5 w-3.5" />
+            <Trash2 className="h-5 w-5 text-secondary" />
           </Button>
         </div>
       </div>
       <div className="shrink-0 text-right">
-        <p className="text-sm font-semibold text-primary tabular-nums">{formatPrice(lineTotal)}</p>
+        <Text size="sm" weight="semibold" variant="primary" className="tabular-nums">
+          {formatPrice(lineTotal)}
+        </Text>
       </div>
     </div>
   );
@@ -119,24 +125,32 @@ const CartDropdown = ({ onClose }: CartDropdownProps) => {
     return (
       <div className={containerClass}>
         <div className="flex items-center justify-between px-5 py-4 border-b border-base-200">
-          <h3 className="text-base font-semibold text-base-content">Cart</h3>
+          <Heading level="h6" className="text-base font-semibold text-base-content">
+            Cart
+          </Heading>
           {onClose && (
-            <button
+            <Button
               type="button"
+              size="xs"
+              styleType="ghost"
               onClick={onClose}
               aria-label="Close cart"
-              className="rounded-full p-1 hover:bg-base-200 transition-colors"
+              className="rounded-full p-1"
             >
               <X className="h-4 w-4 text-base-content/60" />
-            </button>
+            </Button>
           )}
         </div>
         <div className="p-8 flex flex-col items-center justify-center text-center">
           <div className="rounded-full bg-base-200 p-4 mb-3">
             <ShoppingBag className="h-8 w-8 text-base-content" />
           </div>
-          <p className="text-sm text-base-content/70">Your cart is empty.</p>
-          <p className="mt-1 text-xs text-base-content/50">Add items from the categories below.</p>
+          <Text size="sm" className="text-base-content/70">
+            Your cart is empty.
+          </Text>
+          <Text size="xs" className="mt-1 text-base-content/50">
+            Add items from the categories below.
+          </Text>
         </div>
       </div>
     );
@@ -145,18 +159,20 @@ const CartDropdown = ({ onClose }: CartDropdownProps) => {
   return (
     <div className={`${containerClass} flex flex-col`}>
       <div className="flex items-center justify-between px-5 py-4 border-b border-base-200 shrink-0">
-        <h3 className="text-base font-semibold text-base-content">
+        <Heading level="h6" className="text-base font-semibold text-base-content">
           Your Cart ({totalQuantity} {totalQuantity === 1 ? "item" : "items"})
-        </h3>
+        </Heading>
         {onClose && (
-          <button
+          <Button
             type="button"
+            size="xs"
+            styleType="ghost"
             onClick={onClose}
             aria-label="Close cart"
-            className="rounded-full p-1 hover:bg-base-200 transition-colors"
+            className="rounded-full p-1"
           >
             <X className="h-4 w-4 text-base-content/60" />
-          </button>
+          </Button>
         )}
       </div>
       <div className="overflow-y-auto px-4 py-3 flex-1 min-h-0">
@@ -166,8 +182,12 @@ const CartDropdown = ({ onClose }: CartDropdownProps) => {
       </div>
       <div className="p-4 border-t border-base-200 bg-base-200/30 shrink-0 space-y-3">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-sm font-semibold text-base-content">Total</span>
-          <span className="text-xl font-bold text-primary tabular-nums">{formatPrice(totalValue)}</span>
+          <Text as="span" size="sm" weight="semibold" className="text-base-content">
+            Total
+          </Text>
+          <Text as="span" size="xl" weight="bold" variant="primary" className="tabular-nums">
+            {formatPrice(totalValue)}
+          </Text>
         </div>
         <Link to="/checkout" onClick={onClose} className="btn btn-secondary btn-block btn-sm rounded-xl">
           Checkout

@@ -1,6 +1,6 @@
 import { BedDouble, Armchair, Zap, Tent, LayoutGrid } from "lucide-react";
 import type { ReactNode } from "react";
-import { Card, Text, Heading } from "../../ui";
+import { Button, Card, Heading, Text } from "../../ui";
 import categories from "../../dummy-data/categories.json";
 
 export interface Category {
@@ -33,11 +33,12 @@ const Categories = () => {
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {categories.map((category: Category) => (
-          <button
+          <Button
             key={category.categoryId}
             type="button"
+            styleType="ghost"
             onClick={() => handleClick(category.categoryId)}
-            className="flex items-center gap-3 rounded-xl bg-base-200 px-3 py-3 text-left transition-colors hover:bg-base-300 focus-visible:outline-none"
+            className="w-full h-auto justify-start gap-3 rounded-xl bg-base-200 px-3 py-3 hover:bg-base-300"
           >
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-base-100 text-primary">
               {CATEGORY_ICONS[category.categoryId] ?? <LayoutGrid className="h-5 w-5" />}
@@ -45,7 +46,7 @@ const Categories = () => {
             <Text size="sm" weight="medium" className="text-base-content leading-snug">
               {category.categoryName}
             </Text>
-          </button>
+          </Button>
         ))}
       </div>
     </Card>

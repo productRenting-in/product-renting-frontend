@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/navbar";
+import ScrollToTop from "./components/scroll-to-top";
 import { Home, ComponentDemo, Login, Signup, CheckoutPage } from "./pages";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   return (
     <div>
       {!hideNavbar && <Navbar />}
+      <ScrollToTop />
       <div className={!hideNavbar ? "pt-14 md:pt-16" : ""}>
         <Routes>
           <Route path="/" element={<Home />} />

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Search, ShoppingCart, User2, X } from "lucide-react";
 import { useAppSelector } from "../../app/hooks";
 import CartDropdown from "../cart/CartDropdown";
-import { Badge, Input } from "../../ui";
+import { Badge, Button, Input } from "../../ui";
 
 const Navbar = () => {
   const cartQuantity = useAppSelector(state => state.cart.items.reduce((sum, item) => sum + item.quantity, 0));
@@ -21,6 +21,13 @@ const Navbar = () => {
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
+  }, [cartOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = cartOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [cartOpen]);
 
   return (
@@ -60,23 +67,25 @@ const Navbar = () => {
         {/* Actions */}
         <div className="flex items-center">
           {/* Mobile search toggle */}
-          <button
+          <Button
             type="button"
+            styleType="ghost"
             aria-label={searchOpen ? "Close search" : "Search"}
             onClick={() => setSearchOpen(o => !o)}
-            className="md:hidden flex h-9 w-9 items-center justify-center rounded-full text-secondary-content/90 hover:bg-secondary-content/10 transition-colors"
+            className="md:hidden h-9 w-9 p-0 rounded-full text-secondary-content/90 hover:bg-secondary-content/10"
           >
             {searchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
-          </button>
+          </Button>
 
           {/* Cart */}
           <div ref={cartRef} className="relative">
-            <button
+            <Button
               type="button"
+              styleType="ghost"
               aria-label="Cart"
               aria-expanded={cartOpen}
               onClick={() => setCartOpen(o => !o)}
-              className="relative flex h-9 w-9 items-center justify-center rounded-full text-secondary-content/90 hover:bg-secondary-content/10 transition-colors"
+              className="relative h-9 w-9 p-0 rounded-full text-secondary-content/90 hover:bg-secondary-content/10"
             >
               <ShoppingCart className="h-5 w-5" />
               {cartQuantity > 0 && (
@@ -84,7 +93,7 @@ const Navbar = () => {
                   {cartQuantity > 99 ? "99+" : cartQuantity}
                 </Badge>
               )}
-            </button>
+            </Button>
 
             {cartOpen && (
               <>

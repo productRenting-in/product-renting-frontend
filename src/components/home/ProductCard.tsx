@@ -1,7 +1,7 @@
 import { Minus, Plus } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addToCart, removeFromCart, setQuantity } from "../../app/slices/cartSlice";
-import { Card } from "../../ui";
+import { Button, Card, Text } from "../../ui";
 
 export interface ProductItem {
   productId: string;
@@ -49,8 +49,10 @@ const ProductCard = ({ item }: ProductCardProps) => {
   const cardActions =
     cartQuantity > 0 ? (
       <div className="flex items-center gap-2">
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           aria-label="Decrease quantity"
           onClick={e => {
             stop(e);
@@ -60,36 +62,40 @@ const ProductCard = ({ item }: ProductCardProps) => {
               dispatch(setQuantity({ id, quantity: cartQuantity - 1 }));
             }
           }}
-          className="flex h-7 w-7 items-center justify-center rounded-lg bg-secondary text-secondary-content transition hover:opacity-90 active:scale-95"
+          className="h-7 w-7 p-0 rounded-full"
         >
           <Minus className="h-3.5 w-3.5" />
-        </button>
+        </Button>
         <span className="min-w-5 text-center text-sm font-bold tabular-nums text-base-content" aria-live="polite">
           {cartQuantity}
         </span>
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           aria-label="Increase quantity"
           onClick={e => {
             stop(e);
             dispatch(setQuantity({ id, quantity: cartQuantity + 1 }));
           }}
-          className="flex h-7 w-7 items-center justify-center rounded-lg bg-secondary text-secondary-content transition hover:opacity-90 active:scale-95"
+          className="h-7 w-7 p-0 rounded-full"
         >
           <Plus className="h-3.5 w-3.5" />
-        </button>
+        </Button>
       </div>
     ) : (
-      <button
+      <Button
         type="button"
+        variant="secondary"
+        size="sm"
         onClick={e => {
           stop(e);
           dispatch(addToCart({ ...item, imageSrc }));
         }}
-        className="rounded-xl bg-secondary px-4 py-2 text-sm font-semibold text-secondary-content transition hover:opacity-90 active:scale-95"
+        className="rounded-xl"
       >
         Add to Cart
-      </button>
+      </Button>
     );
 
   return (
@@ -105,8 +111,12 @@ const ProductCard = ({ item }: ProductCardProps) => {
       bodyClassName="flex flex-col flex-1"
       actions={cardActions}
     >
-      <p className="flex-1 text-sm text-base-content/80">{description}</p>
-      <p className="mt-1 font-semibold text-primary">{formatPrice(price)}/day</p>
+      <Text size="sm" className="flex-1 text-base-content/80">
+        {description}
+      </Text>
+      <Text weight="semibold" variant="primary" className="mt-1">
+        {formatPrice(price)}/day
+      </Text>
     </Card>
   );
 };

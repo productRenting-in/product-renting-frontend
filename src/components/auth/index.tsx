@@ -212,17 +212,19 @@ const AuthCommon = ({ mode }: AuthCommonProps) => {
 
             {step === "otp" && (
               <>
-                <button
+                <Button
                   type="button"
+                  size="xs"
+                  styleType="ghost"
                   onClick={() => {
                     setStep("phone");
                     setError("");
                   }}
-                  className="mb-4 flex items-center gap-1.5 text-xs text-base-content/60 hover:text-base-content transition-colors w-fit"
+                  className="mb-4 flex items-center gap-1.5 text-base-content/60 hover:text-base-content w-fit px-0"
+                  iconLeft={<ArrowLeft className="h-3.5 w-3.5" />}
                 >
-                  <ArrowLeft className="h-3.5 w-3.5" />
                   Change number
-                </button>
+                </Button>
 
                 <header className="mb-6 space-y-1">
                   <Heading level="h2" className="text-2xl sm:text-3xl">
@@ -286,15 +288,17 @@ const AuthCommon = ({ mode }: AuthCommonProps) => {
                         </span>
                       </Text>
                     ) : (
-                      <button
+                      <Button
                         type="button"
+                        size="xs"
+                        styleType="ghost"
                         onClick={handleResend}
                         disabled={loading}
-                        className="flex items-center gap-1.5 mx-auto text-xs font-semibold text-secondary hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+                        className="mx-auto text-secondary hover:underline disabled:cursor-not-allowed px-0"
+                        iconLeft={<RotateCcw className="h-3 w-3" />}
                       >
-                        <RotateCcw className="h-3 w-3" />
                         Resend OTP
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </form>

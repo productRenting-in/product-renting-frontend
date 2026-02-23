@@ -1,4 +1,5 @@
 import { Hash, Youtube, Facebook } from "lucide-react";
+import { Text } from "../../ui";
 
 const Footer = () => {
   return (
@@ -8,13 +9,19 @@ const Footer = () => {
           {/* Left: Company info */}
           <div className="flex flex-col gap-2">
             <Hash className="h-10 w-10 text-secondary-content" aria-hidden />
-            <p className="text-lg font-semibold text-secondary-content">Let's Function</p>
-            <p className="text-sm text-secondary-content/80">Providing reliable rentals since 2024</p>
+            <Text size="lg" weight="semibold" className="text-secondary-content">
+              Let's Function
+            </Text>
+            <Text size="sm" className="text-secondary-content/80">
+              Providing reliable rentals since 2024
+            </Text>
           </div>
 
           {/* Right: Social */}
           <div className="flex flex-col gap-3">
-            <p className="text-xs font-medium uppercase tracking-wider text-secondary-content/70">Social</p>
+            <Text size="xs" weight="medium" className="uppercase tracking-wider text-secondary-content/70">
+              Social
+            </Text>
             <div className="flex items-center gap-4">
               <a
                 href="https://twitter.com"
