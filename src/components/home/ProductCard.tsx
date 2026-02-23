@@ -46,57 +46,64 @@ const ProductCard = ({ item }: ProductCardProps) => {
     e.stopPropagation();
   };
 
-  const cardActions =
-    cartQuantity > 0 ? (
-      <div className="flex items-center gap-2">
+  const cardActions = (
+    <div className="flex w-full items-center justify-between gap-2">
+      <Text weight="semibold" variant="secondary" className="shrink-0">
+        {formatPrice(price)}/day
+      </Text>
+
+      {cartQuantity > 0 ? (
+        <div className="flex items-center gap-1.5">
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            aria-label="Decrease quantity"
+            onClick={e => {
+              stop(e);
+              if (cartQuantity <= 1) {
+                dispatch(removeFromCart(id));
+              } else {
+                dispatch(setQuantity({ id, quantity: cartQuantity - 1 }));
+              }
+            }}
+            className="h-7 w-7 p-0 rounded-full"
+          >
+            <Minus className="h-3.5 w-3.5" />
+          </Button>
+          <span className="min-w-5 text-center text-sm font-bold tabular-nums text-base-content" aria-live="polite">
+            {cartQuantity}
+          </span>
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            aria-label="Increase quantity"
+            onClick={e => {
+              stop(e);
+              dispatch(setQuantity({ id, quantity: cartQuantity + 1 }));
+            }}
+            className="h-7 w-7 p-0 rounded-full"
+          >
+            <Plus className="h-3.5 w-3.5" />
+          </Button>
+        </div>
+      ) : (
         <Button
           type="button"
           variant="secondary"
           size="sm"
-          aria-label="Decrease quantity"
           onClick={e => {
             stop(e);
-            if (cartQuantity <= 1) {
-              dispatch(removeFromCart(id));
-            } else {
-              dispatch(setQuantity({ id, quantity: cartQuantity - 1 }));
-            }
+            dispatch(addToCart({ ...item, imageSrc }));
           }}
-          className="h-7 w-7 p-0 rounded-full"
+          className="rounded-xl"
         >
-          <Minus className="h-3.5 w-3.5" />
+          Add to Cart
         </Button>
-        <span className="min-w-5 text-center text-sm font-bold tabular-nums text-base-content" aria-live="polite">
-          {cartQuantity}
-        </span>
-        <Button
-          type="button"
-          variant="secondary"
-          size="sm"
-          aria-label="Increase quantity"
-          onClick={e => {
-            stop(e);
-            dispatch(setQuantity({ id, quantity: cartQuantity + 1 }));
-          }}
-          className="h-7 w-7 p-0 rounded-full"
-        >
-          <Plus className="h-3.5 w-3.5" />
-        </Button>
-      </div>
-    ) : (
-      <Button
-        type="button"
-        variant="secondary"
-        size="sm"
-        onClick={e => {
-          stop(e);
-          dispatch(addToCart({ ...item, imageSrc }));
-        }}
-        className="rounded-xl"
-      >
-        Add to Cart
-      </Button>
-    );
+      )}
+    </div>
+  );
 
   return (
     <Card
@@ -113,9 +120,6 @@ const ProductCard = ({ item }: ProductCardProps) => {
     >
       <Text size="sm" className="flex-1 text-base-content/80">
         {description}
-      </Text>
-      <Text weight="semibold" variant="primary" className="mt-1">
-        {formatPrice(price)}/day
       </Text>
     </Card>
   );

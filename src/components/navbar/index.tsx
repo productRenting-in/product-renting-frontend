@@ -24,7 +24,8 @@ const Navbar = () => {
   }, [cartOpen]);
 
   useEffect(() => {
-    document.body.style.overflow = cartOpen ? "hidden" : "";
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    document.body.style.overflow = cartOpen && isMobile ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
@@ -69,7 +70,7 @@ const Navbar = () => {
           {/* Mobile search toggle */}
           <Button
             type="button"
-            styleType="ghost"
+            styleType="link"
             aria-label={searchOpen ? "Close search" : "Search"}
             onClick={() => setSearchOpen(o => !o)}
             className="md:hidden h-9 w-9 p-0 rounded-full text-secondary-content/90 hover:bg-secondary-content/10"
@@ -78,10 +79,15 @@ const Navbar = () => {
           </Button>
 
           {/* Cart */}
-          <div ref={cartRef} className="relative">
+          <div
+            ref={cartRef}
+            className="relative"
+            onMouseEnter={() => setCartOpen(true)}
+            onMouseLeave={() => setCartOpen(false)}
+          >
             <Button
               type="button"
-              styleType="ghost"
+              styleType="link"
               aria-label="Cart"
               aria-expanded={cartOpen}
               onClick={() => setCartOpen(o => !o)}

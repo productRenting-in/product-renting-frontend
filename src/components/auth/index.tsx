@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, RotateCcw, CheckCircle2 } from "lucide-react";
-import { Heading, Text, Card, Button } from "../../ui";
+import { Button, Card, Heading, Input, Text } from "../../ui";
 
 interface AuthCommonProps {
   mode: "login" | "signup";
@@ -147,11 +147,12 @@ const AuthCommon = ({ mode }: AuthCommonProps) => {
                     <label className="label pb-1">
                       <span className="label-text font-medium">Mobile number</span>
                     </label>
-                    <div className="flex overflow-hidden rounded-xl border border-base-300 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all bg-base-100">
-                      <span className="flex shrink-0 items-center border-r border-base-300 bg-base-200 px-3 text-sm font-semibold text-base-content/70 select-none whitespace-nowrap">
+                    <div className="flex overflow-hidden rounded-xl border border-secondary focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20 transition-all bg-base-100">
+                      <span className="flex shrink-0 items-center border-r  border-secondary bg-base-200 px-3 text-sm font-semibold text-base-content/70 select-none whitespace-nowrap">
                         +91
                       </span>
-                      <input
+                      <Input
+                        variant="secondary"
                         type="tel"
                         inputMode="numeric"
                         maxLength={10}
@@ -161,7 +162,9 @@ const AuthCommon = ({ mode }: AuthCommonProps) => {
                           setPhone(e.target.value.replace(/\D/g, "").slice(0, 10));
                           setError("");
                         }}
-                        className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm text-base-content placeholder:text-base-content/40 outline-none"
+                        bordered={false}
+                        size="sm"
+                        className="min-w-0 flex-1 bg-transparent rounded-none placeholder:text-base-content/40"
                         required
                         autoFocus
                       />
@@ -238,11 +241,12 @@ const AuthCommon = ({ mode }: AuthCommonProps) => {
                 <form onSubmit={handleVerifyOtp} className="space-y-5">
                   <div className="flex justify-between gap-1.5 sm:gap-2" onPaste={handleOtpPaste}>
                     {otp.map((digit, index) => (
-                      <input
+                      <Input
                         key={index}
                         ref={el => {
                           otpRefs.current[index] = el;
                         }}
+                        variant="secondary"
                         type="text"
                         inputMode="numeric"
                         maxLength={1}
@@ -251,17 +255,21 @@ const AuthCommon = ({ mode }: AuthCommonProps) => {
                         onKeyDown={e => handleOtpKeyDown(index, e)}
                         aria-label={`OTP digit ${index + 1}`}
                         className={[
-                          "h-11 w-full min-w-0 rounded-xl border-2 bg-base-100 text-center text-base font-bold text-base-content caret-transparent outline-none transition-all",
+                          "h-11 w-full min-w-0 rounded-xl text-center text-base font-bold caret-transparent transition-all",
                           digit
                             ? "border-secondary text-secondary"
-                            : "border-base-300 focus:border-primary focus:ring-2 focus:ring-primary/20",
+                            : "border-secondary focus:border-secondary focus:ring-2 focus:ring-secondary/20",
                           error ? "border-error" : ""
                         ].join(" ")}
                       />
                     ))}
                   </div>
 
-                  {error && <p className="text-xs text-error -mt-2">{error}</p>}
+                  {error && (
+                    <Text size="xs" variant="error" className="-mt-2">
+                      {error}
+                    </Text>
+                  )}
 
                   <Button
                     type="submit"
@@ -291,7 +299,7 @@ const AuthCommon = ({ mode }: AuthCommonProps) => {
                       <Button
                         type="button"
                         size="xs"
-                        styleType="ghost"
+                        styleType="link"
                         onClick={handleResend}
                         disabled={loading}
                         className="mx-auto text-secondary hover:underline disabled:cursor-not-allowed px-0"

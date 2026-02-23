@@ -44,10 +44,9 @@ const Services = () => {
               key={id}
               shadow
               bordered={false}
-              className="transition hover:shadow-xl"
               title={
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
                     <Icon className="h-5 w-5" strokeWidth={1.8} />
                   </div>
                   <Text as="span" size="lg" weight="semibold" className="text-base-content">

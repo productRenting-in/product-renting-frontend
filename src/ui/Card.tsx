@@ -33,7 +33,7 @@ export const Card = ({
     "bg-base-100",
     "rounded-[24px]",
     "overflow-hidden",
-    bordered && "border border-base-300",
+    bordered ? "border border-base-00" : "border-0",
     shadow && "shadow-lg",
     compact && "card-compact",
     className

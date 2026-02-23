@@ -88,22 +88,22 @@ const CartDropdownItem = ({ item }: { item: CartItem }) => {
           >
             <Plus className="h-3.5 w-3.5" />
           </Button>
-          <Button
-            type="button"
-            size="sm"
-            styleType="link"
-            aria-label="Remove from cart"
-            onClick={() => dispatch(removeFromCart(item.id))}
-            className="h-7 w-7 p-0 rounded-full"
-          >
-            <Trash2 className="h-5 w-5 text-secondary" />
-          </Button>
         </div>
       </div>
-      <div className="shrink-0 text-right">
+      <div className="shrink-0 flex flex-col items-end justify-between">
         <Text size="sm" weight="semibold" variant="primary" className="tabular-nums">
           {formatPrice(lineTotal)}
         </Text>
+        <Button
+          type="button"
+          size="sm"
+          styleType="link"
+          aria-label="Remove from cart"
+          onClick={() => dispatch(removeFromCart(item.id))}
+          className="h-7 w-7 p-0 rounded-full"
+        >
+          <Trash2 className="h-5 w-5 text-secondary" />
+        </Button>
       </div>
     </div>
   );

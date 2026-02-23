@@ -58,9 +58,14 @@ const CartItemRow = ({ item }: { item: CartItem }) => {
         className="h-20 w-20 shrink-0 rounded-xl object-cover bg-base-200 ring-1 ring-base-300/50"
       />
       <div className="min-w-0 flex-1">
-        <Text weight="semibold" className="text-base-content">
-          {item.productName}
-        </Text>
+        <div className="flex items-start justify-between gap-2">
+          <Text weight="semibold" className="text-base-content">
+            {item.productName}
+          </Text>
+          <Text weight="semibold" variant="primary" className="tabular-nums shrink-0">
+            {formatPrice(lineTotal)}
+          </Text>
+        </div>
         <Text size="sm" className="mt-0.5 text-base-content/60">
           {formatPrice(price)} each
         </Text>
@@ -91,19 +96,14 @@ const CartItemRow = ({ item }: { item: CartItem }) => {
           <Button
             type="button"
             size="sm"
-            styleType="ghost"
-            className="btn-circle min-h-8 h-8 w-8 p-0 text-error hover:text-error hover:bg-error/10 ml-1"
+            styleType="link"
+            className="btn-circle min-h-8 h-8 w-8 p-0 ml-auto"
             aria-label="Remove from cart"
             onClick={() => dispatch(removeFromCart(item.id))}
           >
-            <Trash2 className="h-4 w-4" />
+            <Trash2 className="h-5 w-5 text-secondary" />
           </Button>
         </div>
-      </div>
-      <div className="shrink-0 text-right">
-        <Text weight="semibold" variant="primary" className="tabular-nums">
-          {formatPrice(lineTotal)}
-        </Text>
       </div>
     </li>
   );
@@ -157,10 +157,10 @@ const Checkout = () => {
       </div>
 
       <div className="mt-6 flex flex-col gap-1 sm:flex-row sm:justify-between">
-        <Link to="/" className="btn btn-ghost btn-block sm:btn-wide order-2 sm:order-1">
+        <Link to="/" className="btn btn-link btn-block sm:btn-wide order-2 sm:order-1">
           Continue shopping
         </Link>
-        <Link to="/checkout" className="btn btn-primary btn-block sm:btn-wide order-1 sm:order-2">
+        <Link to="/checkout" className="btn btn-secondary btn-block sm:btn-wide order-1 sm:order-2">
           Checkout
         </Link>
       </div>

@@ -11,11 +11,11 @@ export interface Category {
 }
 
 const CATEGORY_ICONS: Record<string, ReactNode> = {
-  "1": <BedDouble className="h-5 w-5" />,
-  "2": <Armchair className="h-5 w-5" />,
-  "3": <Zap className="h-5 w-5" />,
-  "4": <Tent className="h-5 w-5" />,
-  "5": <LayoutGrid className="h-5 w-5" />
+  "1": <BedDouble className="h-5 w-5 text-secondary" />,
+  "2": <Armchair className="h-5 w-5 text-secondary" />,
+  "3": <Zap className="h-5 w-5 text-secondary" />,
+  "4": <Tent className="h-5 w-5 text-secondary" />,
+  "5": <LayoutGrid className="h-5 w-5 text-secondary" />
 };
 
 const Categories = () => {
@@ -38,10 +38,10 @@ const Categories = () => {
             type="button"
             styleType="ghost"
             onClick={() => handleClick(category.categoryId)}
-            className="w-full h-auto justify-start gap-3 rounded-xl bg-base-200 px-3 py-3 hover:bg-base-300"
+            className="w-full h-auto justify-start gap-3 rounded-xl bg-base-200 px-3 py-3 hover:bg-base-300 border-transparent hover:border-transparent"
           >
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-base-100 text-primary">
-              {CATEGORY_ICONS[category.categoryId] ?? <LayoutGrid className="h-5 w-5" />}
+              {CATEGORY_ICONS[category.categoryId] ?? <LayoutGrid className="h-5 w-5 text-secondary" />}
             </div>
             <Text size="sm" weight="medium" className="text-base-content leading-snug">
               {category.categoryName}

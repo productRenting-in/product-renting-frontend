@@ -6,7 +6,6 @@ const Footer = () => {
     <footer className="mt-auto w-full bg-secondary text-secondary-content">
       <div className="mx-auto max-w-6xl px-6 py-8 md:px-10">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-          {/* Left: Company info */}
           <div className="flex flex-col gap-2">
             <Hash className="h-10 w-10 text-secondary-content" aria-hidden />
             <Text size="lg" weight="semibold" className="text-secondary-content">
@@ -16,8 +15,6 @@ const Footer = () => {
               Providing reliable rentals since 2024
             </Text>
           </div>
-
-          {/* Right: Social */}
           <div className="flex flex-col gap-3">
             <Text size="xs" weight="medium" className="uppercase tracking-wider text-secondary-content/70">
               Social
