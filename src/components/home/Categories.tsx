@@ -31,7 +31,7 @@ const Categories = () => {
       <Heading level="h3" className="mb-4">
         What are you looking for?
       </Heading>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {categories.map((category: Category) => (
           <button
             key={category.categoryId}

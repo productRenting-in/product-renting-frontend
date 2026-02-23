@@ -27,16 +27,16 @@ const SERVICES = [
 
 const Services = () => {
   return (
-    <section className="bg-base-200 py-14">
+    <section className="bg-base-200 py-8 md:py-14">
       <div className="mx-auto max-w-6xl px-4">
-        <div className="mb-10 text-center">
-          <h2 className="text-3xl font-bold text-base-content md:text-4xl">What We Offer</h2>
-          <p className="mt-3 text-base text-base-content/60">
+        <div className="mb-8 md:mb-10 text-center">
+          <h2 className="text-2xl font-bold text-base-content sm:text-3xl md:text-4xl">What We Offer</h2>
+          <p className="mt-3 text-sm text-base-content/60 sm:text-base">
             Everything you need for your home, event or celebration — in one place.
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map(({ id, icon: Icon, title, description }) => (
             <Card
               key={id}

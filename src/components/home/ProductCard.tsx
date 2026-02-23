@@ -1,7 +1,7 @@
 import { Minus, Plus } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addToCart, removeFromCart, setQuantity } from "../../app/slices/cartSlice";
-import { Card, Button } from "../../ui";
+import { Card } from "../../ui";
 
 export interface ProductItem {
   productId: string;
@@ -23,7 +23,7 @@ const formatPrice = (amount: number) =>
 
 const DEFAULT_DESCRIPTION = "Rent this item for your occasion.";
 
-const getItemId = (item: ProductItem) => `product-${item.productId}`;
+const getItemId = (item: ProductItem) => item.productId ?? item.productName.toLowerCase().replace(/\s+/g, "-");
 
 const getImageSrc = (item: ProductItem) =>
   item.imageSrc ?? `https://picsum.photos/seed/product-${item.productId}/400/300`;
@@ -41,58 +41,55 @@ const ProductCard = ({ item }: ProductCardProps) => {
 
   const cartQuantity = useAppSelector(state => state.cart.items.find(i => i.id === id)?.quantity) ?? 0;
 
+  const stop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   const cardActions =
     cartQuantity > 0 ? (
-      <div className="flex items-center justify-end gap-1">
-        <Button
+      <div className="flex items-center gap-2">
+        <button
           type="button"
-          size="sm"
-          variant="secondary"
-          className="btn-circle min-h-8 h-8 w-8 p-0 text-base-100"
           aria-label="Decrease quantity"
           onClick={e => {
-            e.preventDefault();
-            e.stopPropagation();
+            stop(e);
             if (cartQuantity <= 1) {
               dispatch(removeFromCart(id));
             } else {
               dispatch(setQuantity({ id, quantity: cartQuantity - 1 }));
             }
           }}
+          className="flex h-7 w-7 items-center justify-center rounded-lg bg-secondary text-secondary-content transition hover:opacity-90 active:scale-95"
         >
-          <Minus className="h-4 w-4" />
-        </Button>
-        <span className="min-w-6 text-center text-sm font-bold tabular-nums" aria-live="polite">
+          <Minus className="h-3.5 w-3.5" />
+        </button>
+        <span className="min-w-5 text-center text-sm font-bold tabular-nums text-base-content" aria-live="polite">
           {cartQuantity}
         </span>
-        <Button
+        <button
           type="button"
-          size="sm"
-          variant="secondary"
-          className="btn-circle min-h-8 h-8 w-8 p-0 text-base-100"
           aria-label="Increase quantity"
           onClick={e => {
-            e.preventDefault();
-            e.stopPropagation();
+            stop(e);
             dispatch(setQuantity({ id, quantity: cartQuantity + 1 }));
           }}
+          className="flex h-7 w-7 items-center justify-center rounded-lg bg-secondary text-secondary-content transition hover:opacity-90 active:scale-95"
         >
-          <Plus className="h-4 w-4" />
-        </Button>
+          <Plus className="h-3.5 w-3.5" />
+        </button>
       </div>
     ) : (
-      <Button
+      <button
         type="button"
-        size="sm"
-        variant="secondary"
         onClick={e => {
-          e.preventDefault();
-          e.stopPropagation();
+          stop(e);
           dispatch(addToCart({ ...item, imageSrc }));
         }}
+        className="rounded-xl bg-secondary px-4 py-2 text-sm font-semibold text-secondary-content transition hover:opacity-90 active:scale-95"
       >
         Add to Cart
-      </Button>
+      </button>
     );
 
   return (
@@ -104,11 +101,11 @@ const ProductCard = ({ item }: ProductCardProps) => {
       shadow
       bordered={false}
       imageClassName="h-44"
-      className="min-w-[200px] shrink-0 overflow-hidden rounded-2xl transition hover:shadow-xl md:min-w-0 flex flex-col w-full h-full"
+      className="overflow-hidden rounded-2xl transition hover:shadow-xl flex flex-col w-full h-full"
       bodyClassName="flex flex-col flex-1"
       actions={cardActions}
     >
-      <p className="flex-1 text-sm text-base-content/80 line-clamp-3">{description}</p>
+      <p className="flex-1 text-sm text-base-content/80">{description}</p>
       <p className="mt-1 font-semibold text-primary">{formatPrice(price)}/day</p>
     </Card>
   );

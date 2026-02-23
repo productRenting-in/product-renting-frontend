@@ -148,20 +148,20 @@ const AuthCommon = ({ mode }: AuthCommonProps) => {
                       <span className="label-text font-medium">Mobile number</span>
                     </label>
                     <div className="flex overflow-hidden rounded-xl border border-base-300 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all bg-base-100">
-                      <span className="flex items-center gap-1.5 border-r border-base-300 bg-base-200 px-3 text-sm font-medium text-base-content/70 select-none">
-                        🇮🇳 +91
+                      <span className="flex shrink-0 items-center border-r border-base-300 bg-base-200 px-3 text-sm font-semibold text-base-content/70 select-none whitespace-nowrap">
+                        +91
                       </span>
                       <input
                         type="tel"
                         inputMode="numeric"
                         maxLength={10}
-                        placeholder="Enter 10-digit number"
+                        placeholder="10-digit mobile number"
                         value={phone}
                         onChange={e => {
                           setPhone(e.target.value.replace(/\D/g, "").slice(0, 10));
                           setError("");
                         }}
-                        className="flex-1 bg-transparent px-3 py-2.5 text-sm text-base-content placeholder:text-base-content/40 outline-none"
+                        className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm text-base-content placeholder:text-base-content/40 outline-none"
                         required
                         autoFocus
                       />
@@ -234,7 +234,7 @@ const AuthCommon = ({ mode }: AuthCommonProps) => {
                 </header>
 
                 <form onSubmit={handleVerifyOtp} className="space-y-5">
-                  <div className="flex justify-between gap-2" onPaste={handleOtpPaste}>
+                  <div className="flex justify-between gap-1.5 sm:gap-2" onPaste={handleOtpPaste}>
                     {otp.map((digit, index) => (
                       <input
                         key={index}
@@ -249,7 +249,7 @@ const AuthCommon = ({ mode }: AuthCommonProps) => {
                         onKeyDown={e => handleOtpKeyDown(index, e)}
                         aria-label={`OTP digit ${index + 1}`}
                         className={[
-                          "h-12 w-full max-w-[44px] rounded-xl border-2 bg-base-100 text-center text-lg font-bold text-base-content caret-transparent outline-none transition-all",
+                          "h-11 w-full min-w-0 rounded-xl border-2 bg-base-100 text-center text-base font-bold text-base-content caret-transparent outline-none transition-all",
                           digit
                             ? "border-secondary text-secondary"
                             : "border-base-300 focus:border-primary focus:ring-2 focus:ring-primary/20",

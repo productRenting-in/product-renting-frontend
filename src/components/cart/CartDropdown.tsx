@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { removeFromCart, setQuantity, type CartItem } from "../../app/slices/cartSlice";
 import { Button } from "../../ui";
@@ -103,16 +103,33 @@ const CartDropdownItem = ({ item }: { item: CartItem }) => {
   );
 };
 
-const CartDropdown = () => {
+interface CartDropdownProps {
+  onClose?: () => void;
+}
+
+const CartDropdown = ({ onClose }: CartDropdownProps) => {
   const items = useAppSelector(state => state.cart.items);
   const totalQuantity = items.reduce((sum, i) => sum + i.quantity, 0);
   const totalValue = items.reduce((sum, i) => sum + (i.pricePerDay ?? DEFAULT_PRICE) * i.quantity, 0);
 
+  const containerClass =
+    "bg-base-100 rounded-2xl shadow-xl border border-base-200 w-full md:w-96 max-h-[75vh] overflow-hidden";
+
   if (items.length === 0) {
     return (
-      <div className="bg-base-100 rounded-2xl shadow-xl border border-base-200 w-96 max-h-[70vh] overflow-hidden">
-        <div className="px-5 py-4 border-b border-base-200">
+      <div className={containerClass}>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-base-200">
           <h3 className="text-base font-semibold text-base-content">Cart</h3>
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close cart"
+              className="rounded-full p-1 hover:bg-base-200 transition-colors"
+            >
+              <X className="h-4 w-4 text-base-content/60" />
+            </button>
+          )}
         </div>
         <div className="p-8 flex flex-col items-center justify-center text-center">
           <div className="rounded-full bg-base-200 p-4 mb-3">
@@ -126,11 +143,21 @@ const CartDropdown = () => {
   }
 
   return (
-    <div className="bg-base-100 rounded-2xl shadow-xl border border-base-200 w-96 max-h-[70vh] overflow-hidden flex flex-col">
-      <div className="px-5 py-4 border-b border-base-200 shrink-0">
+    <div className={`${containerClass} flex flex-col`}>
+      <div className="flex items-center justify-between px-5 py-4 border-b border-base-200 shrink-0">
         <h3 className="text-base font-semibold text-base-content">
           Your Cart ({totalQuantity} {totalQuantity === 1 ? "item" : "items"})
         </h3>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close cart"
+            className="rounded-full p-1 hover:bg-base-200 transition-colors"
+          >
+            <X className="h-4 w-4 text-base-content/60" />
+          </button>
+        )}
       </div>
       <div className="overflow-y-auto px-4 py-3 flex-1 min-h-0">
         {items.map(item => (
@@ -142,7 +169,7 @@ const CartDropdown = () => {
           <span className="text-sm font-semibold text-base-content">Total</span>
           <span className="text-xl font-bold text-primary tabular-nums">{formatPrice(totalValue)}</span>
         </div>
-        <Link to="/checkout" className="btn btn-secondary btn-block btn-sm rounded-xl">
+        <Link to="/checkout" onClick={onClose} className="btn btn-secondary btn-block btn-sm rounded-xl">
           Checkout
         </Link>
       </div>

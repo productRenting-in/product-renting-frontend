@@ -10,13 +10,15 @@ function App() {
   return (
     <div>
       {!hideNavbar && <Navbar />}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/components" element={<ComponentDemo />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
+      <div className={!hideNavbar ? "pt-14 md:pt-16" : ""}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/components" element={<ComponentDemo />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </div>
     </div>
   );
 }
