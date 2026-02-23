@@ -29,15 +29,15 @@ const PLACEHOLDER_IMAGES: Record<string, string> = {
 
 const getItemImage = (item: CartItem) =>
   item.imageSrc ??
-  PLACEHOLDER_IMAGES[item.name] ??
-  "https://picsum.photos/seed/" + encodeURIComponent(item.name) + "/400/300";
+  PLACEHOLDER_IMAGES[item.productName] ??
+  "https://picsum.photos/seed/" + encodeURIComponent(item.productName) + "/400/300";
 
 const formatPrice = (amount: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
 
 const CartDropdownItem = ({ item }: { item: CartItem }) => {
   const dispatch = useAppDispatch();
-  const price = item.price ?? DEFAULT_PRICE;
+  const price = item.pricePerDay ?? DEFAULT_PRICE;
   const lineTotal = price * item.quantity;
   const imageSrc = getItemImage(item);
 
@@ -54,11 +54,11 @@ const CartDropdownItem = ({ item }: { item: CartItem }) => {
     <div className="flex gap-3 border-b border-base-200 py-4 last:border-0">
       <img
         src={imageSrc}
-        alt={item.name}
+        alt={item.productName}
         className="h-14 w-14 shrink-0 rounded-xl object-cover bg-base-200 ring-1 ring-base-300/50"
       />
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium text-base-content line-clamp-2 leading-snug">{item.name}</p>
+        <p className="text-sm font-medium text-base-content line-clamp-2 leading-snug">{item.productName}</p>
         <p className="mt-0.5 text-xs text-base-content/60">{formatPrice(price)} each</p>
         <div className="mt-2 flex items-center gap-2">
           <Button
@@ -106,7 +106,7 @@ const CartDropdownItem = ({ item }: { item: CartItem }) => {
 const CartDropdown = () => {
   const items = useAppSelector(state => state.cart.items);
   const totalQuantity = items.reduce((sum, i) => sum + i.quantity, 0);
-  const totalValue = items.reduce((sum, i) => sum + (i.price ?? DEFAULT_PRICE) * i.quantity, 0);
+  const totalValue = items.reduce((sum, i) => sum + (i.pricePerDay ?? DEFAULT_PRICE) * i.quantity, 0);
 
   if (items.length === 0) {
     return (

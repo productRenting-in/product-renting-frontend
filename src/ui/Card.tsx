@@ -10,6 +10,7 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title">
   bordered?: boolean;
   shadow?: string | boolean;
   bodyClassName?: string;
+  imageClassName?: string;
 }
 
 export const Card = ({
@@ -22,6 +23,7 @@ export const Card = ({
   bordered,
   shadow = true,
   bodyClassName,
+  imageClassName,
   className = "",
   children,
   ...rest
@@ -40,8 +42,8 @@ export const Card = ({
     .join(" ");
 
   const imageElement = imageSrc && (
-    <figure className="overflow-hidden">
-      <img src={imageSrc} alt={imageAlt} className="w-full object-cover" />
+    <figure className={["overflow-hidden", imageClassName].filter(Boolean).join(" ")}>
+      <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover" />
     </figure>
   );
 

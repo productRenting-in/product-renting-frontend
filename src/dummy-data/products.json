@@ -1,0 +1,326 @@
+[
+  {
+    "productId": "1",
+    "productName": "Cotton Matteresses Set",
+    "productDescription": "1 Cotton Mattress (foldable) \nDimentions 3*6 ft 2'inches thick\n1 Cotton Pillow \nDimentions 18*12'inches\n1 Regular Quilt \nDimentions 4*7 ft / 1 Summer blanket Dimentions 3*6 ft",
+    "category": "1",
+    "pricePerDay": 50,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "2",
+    "productName": "Foam Mattress Set",
+    "productDescription": "1 EP Foam Mattress  \nDimentions 3*6 ft 3'inches thick + 1 Bedsheet Dimentions 4*7 ft \n1 Microfiber Pillow \nDimentions 20*12'inches\n1 Blancket \nDimentions 4*7 ft / 1 Summer blanket Dimentions 3*6 ft",
+    "category": "1",
+    "pricePerDay": 75,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "3",
+    "productName": "Dunlop Mattress Set",
+    "productDescription": "1 Soft Foam Mattress  \nDimentions 3*6 ft 3'inches thick  + 1 Bedsheet Dimentions 4*7 ft \n1 Microfiber Pillow \nDimentions 20*12'inches\n1 Blancket \nDimentions 4*7 ft / 1 Summer blanket Dimentions 3*6 ft",
+    "category": "1",
+    "pricePerDay": 120,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "4",
+    "productName": "Plastic Chair",
+    "productDescription": "Italica Plastic Clean chairs",
+    "category": "2",
+    "pricePerDay": 20,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "5",
+    "productName": "Highback Plastic Chair",
+    "productDescription": "",
+    "category": "2",
+    "pricePerDay": 25,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "6",
+    "productName": "Dunlop Chair ",
+    "productDescription": "Cover included, steel chair with back coushion support ",
+    "category": "2",
+    "pricePerDay": 40,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "7",
+    "productName": "Golden Chairs",
+    "productDescription": "Designed iron chair with white Seat",
+    "category": "2",
+    "pricePerDay": 60,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "8",
+    "productName": "Crystal Chair",
+    "productDescription": "Crystal plastic with Seat & seat cover",
+    "category": "2",
+    "pricePerDay": 120,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "9",
+    "productName": "Sofa 2 Seater",
+    "productDescription": "Sofa with comfort",
+    "category": "2",
+    "pricePerDay": 800,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "10",
+    "productName": "Single seater Sofa",
+    "productDescription": "",
+    "category": "2",
+    "pricePerDay": 500,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "11",
+    "productName": "Diwan",
+    "productDescription": "Dimensions 3*6 Ft on 1.5 ft height \nCover included with 3 long pillows",
+    "category": "2",
+    "pricePerDay": 600,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "12",
+    "productName": "Handicraft Jhula",
+    "productDescription": "with installation",
+    "category": "2",
+    "pricePerDay": 5100,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "13",
+    "productName": "Wooden Jhula",
+    "productDescription": "with installation",
+    "category": "2",
+    "pricePerDay": 2100,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "14",
+    "productName": "Handicraft couch",
+    "productDescription": "Wooden couch",
+    "category": "2",
+    "pricePerDay": 2100,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "15",
+    "productName": "Round Table 4*4",
+    "productDescription": "with cover",
+    "category": "2",
+    "pricePerDay": 250,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "16",
+    "productName": "Catering Table 2*6",
+    "productDescription": "with cover",
+    "category": "2",
+    "pricePerDay": 150,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "17",
+    "productName": "Tea Table",
+    "productDescription": "",
+    "category": "2",
+    "pricePerDay": 200,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "18",
+    "productName": "Bajot",
+    "productDescription": "2*2 ft 9 inches height, clean painted ",
+    "category": "2",
+    "pricePerDay": 60,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "19",
+    "productName": "Pooja Chowki",
+    "productDescription": "2*2 ft 9 inches height, with handicraft finihing",
+    "category": "2",
+    "pricePerDay": 100,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "20",
+    "productName": "Silent Fan",
+    "productDescription": "With Connection & wire",
+    "category": "3",
+    "pricePerDay": 300,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "21",
+    "productName": "Fan ",
+    "productDescription": "With Connection & wire",
+    "category": "3",
+    "pricePerDay": 250,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "22",
+    "productName": "Mist Fan",
+    "productDescription": "With Connection & wire",
+    "category": "3",
+    "pricePerDay": 1000,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "23",
+    "productName": "Small Coolers",
+    "productDescription": "With Connection & wire",
+    "category": "3",
+    "pricePerDay": 600,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "24",
+    "productName": "Jamboo Coolers",
+    "productDescription": "With Connection & wire",
+    "category": "3",
+    "pricePerDay": 1200,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "25",
+    "productName": "Electric Heater",
+    "productDescription": "With Connection & wire",
+    "category": "3",
+    "pricePerDay": 2000,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "26",
+    "productName": "Gas Heater",
+    "productDescription": "With Gas Cylender",
+    "category": "3",
+    "pricePerDay": 1500,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "27",
+    "productName": "Deep Refreigerator",
+    "productDescription": "With Connection & wire",
+    "category": "3",
+    "pricePerDay": 1200,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "28",
+    "productName": "Tent ",
+    "productDescription": "15*15 Tent on pipe, T\nhree side covering with Side wall, \n10 Plastic Chairs, \nSolid colour carpet 15*15, \n2 LED white Light with wire & connection, \n1 Jamboo cooler/ Electric Heater",
+    "category": "4",
+    "pricePerDay": 3500,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "29",
+    "productName": "Solid Colour Regular ",
+    "productDescription": "Green/ blue/ red/etc.",
+    "category": "5",
+    "pricePerDay": 2,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "30",
+    "productName": "Very Clean Solid colour Carpet",
+    "productDescription": "Green/ blue/ red/etc.",
+    "category": "5",
+    "pricePerDay": 5,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "31",
+    "productName": "Very Clean Printed Carpet",
+    "productDescription": "Multi colour",
+    "category": "5",
+    "pricePerDay": 4,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "32",
+    "productName": "New printed rolls",
+    "productDescription": "Multi colour",
+    "category": "5",
+    "pricePerDay": 6,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "33",
+    "productName": "Dari",
+    "productDescription": "4*8 ft Clean Red & Black ",
+    "category": "5",
+    "pricePerDay": 50,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "34",
+    "productName": "Patya",
+    "productDescription": "2*10 ft Clean",
+    "category": "5",
+    "pricePerDay": 15,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "35",
+    "productName": "White Bichaat",
+    "productDescription": "Big White bedsheet in size of 10*30",
+    "category": "5",
+    "pricePerDay": 5,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  },
+  {
+    "productId": "36",
+    "productName": "White Bichaat on mattress",
+    "productDescription": "Big White bedsheet in size of 10*30 neatly spread on set of EP Foam mattresses",
+    "category": "5",
+    "pricePerDay": 12,
+    "pricePerWeek": null,
+    "pricePerMonth": null
+  }
+]

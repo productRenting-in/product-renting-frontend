@@ -1,4 +1,4 @@
-import AuthCommon from "./AuthCommon";
+import AuthCommon from "../components/auth";
 
 const Login = () => {
   return <AuthCommon mode="login" />;

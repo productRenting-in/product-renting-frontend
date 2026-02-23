@@ -1,17 +1,28 @@
-import { type HTMLAttributes, type ReactNode, useId, Children, isValidElement, cloneElement } from "react";
+import {
+  type HTMLAttributes,
+  type ReactNode,
+  useId,
+  Children,
+  isValidElement,
+  cloneElement,
+  useState,
+  useEffect,
+  useCallback
+} from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type CarouselSnap = "start" | "center" | "end";
 type CarouselDirection = "horizontal" | "vertical";
 
 export interface CarouselProps extends HTMLAttributes<HTMLDivElement> {
-  /** Snap alignment of items. Default: start */
   snap?: CarouselSnap;
-  /** Horizontal or vertical scroll. Default: horizontal */
   direction?: CarouselDirection;
-  /** Render indicator buttons (1, 2, 3...) that scroll to each slide. Uses anchor links. */
   showIndicators?: boolean;
-  /** Render prev/next arrow buttons overlay. Uses anchor links. */
   showArrows?: boolean;
+  autoPlay?: boolean;
+  interval?: number;
+  pauseOnHover?: boolean;
+  dotIndicators?: boolean;
   children: ReactNode;
 }
 
@@ -26,6 +37,10 @@ export const Carousel = ({
   direction = "horizontal",
   showIndicators = false,
   showArrows = false,
+  autoPlay = false,
+  interval = 5000,
+  pauseOnHover = true,
+  dotIndicators = false,
   className = "",
   children,
   id: propId,
@@ -35,12 +50,104 @@ export const Carousel = ({
   const baseId = (propId ?? generatedId).replace(/:/g, "");
   const isVertical = direction === "vertical";
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
   const childArray = Children.toArray(children).filter(
     (child): child is React.ReactElement =>
       isValidElement(child) && (child.type as { displayName?: string })?.displayName === "CarouselItem"
   );
-
   const hasItems = childArray.length > 0;
+  const count = childArray.length;
+
+  const goTo = useCallback((index: number) => setCurrentIndex(index), []);
+  const next = useCallback(() => setCurrentIndex(i => (i + 1) % count), [count]);
+  const prev = useCallback(() => setCurrentIndex(i => (i - 1 + count) % count), [count]);
+
+  useEffect(() => {
+    if (!autoPlay || paused || !hasItems) return;
+    const id = setInterval(next, interval);
+    return () => clearInterval(id);
+  }, [autoPlay, paused, hasItems, next, interval]);
+
+  // ── autoPlay mode: fade-transition, JS-controlled ──────────────────────────
+  if (autoPlay) {
+    return (
+      <div
+        className={["relative overflow-hidden", className].filter(Boolean).join(" ")}
+        onMouseEnter={() => pauseOnHover && setPaused(true)}
+        onMouseLeave={() => pauseOnHover && setPaused(false)}
+        {...rest}
+      >
+        {childArray.map((child, index) => {
+          const el = child as React.ReactElement<{ children?: ReactNode }>;
+          return (
+            <div
+              key={index}
+              className={[
+                "absolute inset-0 transition-opacity duration-700",
+                index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+              ].join(" ")}
+            >
+              {el.props?.children}
+            </div>
+          );
+        })}
+
+        {showArrows && (
+          <>
+            <button
+              type="button"
+              onClick={prev}
+              aria-label="Previous slide"
+              className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/30 p-1.5 text-white backdrop-blur-sm transition hover:bg-black/50"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={next}
+              aria-label="Next slide"
+              className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/30 p-1.5 text-white backdrop-blur-sm transition hover:bg-black/50"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </>
+        )}
+
+        {showIndicators && (
+          <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+            {childArray.map((_, index) =>
+              dotIndicators ? (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => goTo(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                  className={[
+                    "h-2 rounded-full transition-all duration-300",
+                    index === currentIndex ? "w-6 bg-white" : "w-2 bg-white/50 hover:bg-white/75"
+                  ].join(" ")}
+                />
+              ) : (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => goTo(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                  className={["btn btn-xs", index === currentIndex ? "btn-active" : ""].join(" ")}
+                >
+                  {index + 1}
+                </button>
+              )
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ── default mode: CSS scroll-snap, anchor-link navigation ──────────────────
   const itemsWithIds = hasItems
     ? childArray.map((child, index) =>
         cloneElement(child as React.ReactElement<{ id?: string }>, {
@@ -88,6 +195,7 @@ export const Carousel = ({
             })
           : itemsWithIds}
       </div>
+
       {showIndicators && hasItems && (
         <div className="flex w-full justify-center gap-2 py-2">
           {childArray.map((_, index) => (

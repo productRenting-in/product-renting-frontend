@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { removeFromCart, setQuantity, type CartItem } from "../app/slices/cartSlice";
-import { Button } from "../ui";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { type CartItem, removeFromCart, setQuantity } from "../../app/slices/cartSlice";
+import { Button } from "../../ui";
 
 const DEFAULT_PRICE = 129;
 
@@ -29,15 +29,15 @@ const PLACEHOLDER_IMAGES: Record<string, string> = {
 
 const getItemImage = (item: CartItem) =>
   item.imageSrc ??
-  PLACEHOLDER_IMAGES[item.name] ??
-  "https://picsum.photos/seed/" + encodeURIComponent(item.name) + "/400/300";
+  PLACEHOLDER_IMAGES[item.productName] ??
+  "https://picsum.photos/seed/" + encodeURIComponent(item.productName) + "/400/300";
 
 const formatPrice = (amount: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
 
 const CartItemRow = ({ item }: { item: CartItem }) => {
   const dispatch = useAppDispatch();
-  const price = item.price ?? DEFAULT_PRICE;
+  const price = item.pricePerDay ?? DEFAULT_PRICE;
   const lineTotal = price * item.quantity;
   const imageSrc = getItemImage(item);
 
@@ -54,11 +54,11 @@ const CartItemRow = ({ item }: { item: CartItem }) => {
     <li className="flex gap-4 rounded-2xl border border-base-200 bg-base-100 p-4 shadow-sm">
       <img
         src={imageSrc}
-        alt={item.name}
+        alt={item.productName}
         className="h-20 w-20 shrink-0 rounded-xl object-cover bg-base-200 ring-1 ring-base-300/50"
       />
       <div className="min-w-0 flex-1">
-        <p className="font-semibold text-base-content">{item.name}</p>
+        <p className="font-semibold text-base-content">{item.productName}</p>
         <p className="mt-0.5 text-sm text-base-content/60">{formatPrice(price)} each</p>
         <div className="mt-3 flex items-center gap-2">
           <Button
@@ -103,9 +103,9 @@ const CartItemRow = ({ item }: { item: CartItem }) => {
   );
 };
 
-const Cart = () => {
+const Checkout = () => {
   const items = useAppSelector(state => state.cart.items);
-  const total = items.reduce((sum, i) => sum + (i.price ?? DEFAULT_PRICE) * i.quantity, 0);
+  const total = items.reduce((sum, i) => sum + (i.pricePerDay ?? DEFAULT_PRICE) * i.quantity, 0);
 
   if (items.length === 0) {
     return (
@@ -154,4 +154,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default Checkout;

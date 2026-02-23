@@ -1,60 +1,25 @@
-import { useAppDispatch } from "../app/hooks";
-import { addToCart } from "../app/slices/cartSlice";
 import Hero from "../components/home/Hero";
-import CategoriesSection from "../components/home/CategoriesSection";
+import ServicesSection from "../components/home/Services";
+import ProductSection from "../components/home/Products";
 import Footer from "../components/footer";
-
-const RENT_FROM_US_SUBCATEGORIES = [
-  { name: "Gadde" },
-  { name: "Takiye" },
-  { name: "Chairs" },
-  { name: "Heaters" },
-  { name: "Coolers" },
-  { name: "Carpet Section" },
-  { name: "Fans" },
-  { name: "Water" }
-];
-
-const PLAN_A_DECOR_SUBCATEGORIES = [
-  { name: "Balloon decor" },
-  { name: "Plan Birthday decor" },
-  { name: "Plan Anniversary decor" }
-];
-
-const CUSTOMIZE_WITH_US_SUBCATEGORIES = [
-  { name: "Water bottles" },
-  { name: "Gifts" },
-  { name: "Welcome signboard" },
-  { name: "Haldi tray" },
-  { name: "Ring platter" },
-  { name: "Varmaala" }
-];
+import categories from "../dummy-data/categories.json";
+import type { Category } from "../components/home/Categories";
+import products from "../dummy-data/products.json";
 
 const Home = () => {
-  const dispatch = useAppDispatch();
-
   return (
     <div className="flex min-h-screen flex-col bg-base-200">
       <main className="flex-1">
         <Hero />
-        <CategoriesSection
-          title="Rent from Us"
-          subcategories={RENT_FROM_US_SUBCATEGORIES}
-          sectionId="rent-products"
-          onAddToCart={item => dispatch(addToCart(item))}
-        />
-        <CategoriesSection
-          title="Plan & Decorate"
-          subcategories={PLAN_A_DECOR_SUBCATEGORIES}
-          sectionId="plan-decor"
-          onAddToCart={item => dispatch(addToCart(item))}
-        />
-        <CategoriesSection
-          title="Customize with Us"
-          subcategories={CUSTOMIZE_WITH_US_SUBCATEGORIES}
-          sectionId="customization"
-          onAddToCart={item => dispatch(addToCart(item))}
-        />
+        <ServicesSection />
+        {categories.map((category: Category) => (
+          <ProductSection
+            key={category.categoryId}
+            title={category.categoryName}
+            products={products.filter(p => p.category === category.categoryId)}
+            sectionId={category.categoryId}
+          />
+        ))}
       </main>
       <Footer />
     </div>

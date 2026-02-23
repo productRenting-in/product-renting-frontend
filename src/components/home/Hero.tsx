@@ -1,15 +1,15 @@
-import HeroCategories from "./HeroCategories";
-import HeroGallery from "./HeroGallery";
+import Categories from "./Categories";
+import Gallery from "./Gallery";
 
 const Hero = () => {
   return (
-    <section className="bg-base-100 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 lg:flex-row lg:items-stretch">
+    <section className="flex-1 min-h-0 bg-base-100 py-14">
+      <div className="mx-auto flex h-full max-w-6xl flex-col gap-6 px-4 lg:flex-row lg:items-stretch">
         <div className="w-full lg:w-[55%]">
-          <HeroCategories />
+          <Categories />
         </div>
-        <div className="w-full lg:w-[45%] min-h-0">
-          <HeroGallery />
+        <div className="w-full min-h-[220px] lg:w-[45%] lg:min-h-0">
+          <Gallery />
         </div>
       </div>
     </section>
