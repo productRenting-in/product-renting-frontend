@@ -4,17 +4,9 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addToCart, removeFromCart, setQuantity } from "../../app/slices/cartSlice";
 import { Button, Card, Text } from "../../ui";
 import ProductDetailModal from "./ProductDetailModal";
+import type { ProductItem } from "../../types";
 
-export interface ProductItem {
-  productId: string;
-  productName: string;
-  productDescription: string;
-  category: string;
-  pricePerDay: number;
-  imageSrc?: string;
-  pricePerWeek: number | null;
-  pricePerMonth: number | null;
-}
+export type { ProductItem };
 
 const formatPrice = (amount: number) =>
   new Intl.NumberFormat("en-IN", {

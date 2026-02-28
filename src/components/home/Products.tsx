@@ -1,5 +1,6 @@
-import ProductCard, { type ProductItem } from "./ProductCard";
+import ProductCard from "./ProductCard";
 import { Heading } from "../../ui";
+import type { ProductItem } from "../../types";
 
 export type { ProductItem };
 

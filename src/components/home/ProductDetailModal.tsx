@@ -1,8 +1,8 @@
 import { Minus, Plus, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addToCart, removeFromCart, setQuantity } from "../../app/slices/cartSlice";
-import { Badge, Button, Modal, Text } from "../../ui";
-import type { ProductItem } from "./ProductCard";
+import { Badge, Button, Heading, Modal, Text } from "../../ui";
+import type { ProductItem } from "../../types";
 
 const formatPrice = (amount: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
@@ -63,15 +63,19 @@ const ProductDetailModal = ({ item, onClose }: ProductDetailModalProps) => {
           <div className="px-6 pt-5 pb-4">
             {/* Name + close button */}
             <div className="flex items-center justify-between gap-3 mb-2">
-              <h3 className="text-xl font-bold text-base-content leading-tight">{item.productName}</h3>
-              <button
+              <Heading level="h5" className="text-xl font-bold text-base-content leading-tight">
+                {item.productName}
+              </Heading>
+              <Button
                 type="button"
+                size="sm"
+                styleType="ghost"
                 onClick={onClose}
-                className="btn btn-sm btn-circle btn-ghost shrink-0"
+                className="btn-circle shrink-0"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" />
-              </button>
+              </Button>
             </div>
 
             {showCategory && (
@@ -104,10 +108,12 @@ const ProductDetailModal = ({ item, onClose }: ProductDetailModalProps) => {
               <Text size="xs" className="text-base-content/40 block leading-none mb-0.5">
                 Starting from
               </Text>
-              <span className="font-bold text-lg text-secondary tabular-nums">
+              <Text as="span" size="lg" weight="bold" variant="secondary" className="tabular-nums">
                 {formatPrice(item.pricePerDay)}
-                <span className="text-xs font-normal text-base-content/50 ml-0.5">/day</span>
-              </span>
+                <Text as="span" size="xs" weight="normal" className="text-base-content/50 ml-0.5">
+                  /day
+                </Text>
+              </Text>
             </div>
 
             {cartQuantity > 0 ? (
