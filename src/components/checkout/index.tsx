@@ -1,0 +1,171 @@
+import { Link } from "react-router-dom";
+import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { type CartItem, removeFromCart, setQuantity } from "../../app/slices/cartSlice";
+import { Button, Heading, Text } from "../../ui";
+
+const DEFAULT_PRICE = 129;
+
+const PLACEHOLDER_IMAGES: Record<string, string> = {
+  Gadde: "https://picsum.photos/seed/gadde/400/300",
+  Takiye: "https://picsum.photos/seed/takiye/400/300",
+  Chairs: "https://picsum.photos/seed/chairs/400/300",
+  Heaters: "https://picsum.photos/seed/heaters/400/300",
+  Coolers: "https://picsum.photos/seed/coolers/400/300",
+  "Carpet section": "https://picsum.photos/seed/carpet/400/300",
+  "Carpet Section": "https://picsum.photos/seed/carpet/400/300",
+  Fans: "https://picsum.photos/seed/fans/400/300",
+  Water: "https://picsum.photos/seed/water/400/300",
+  "Balloon decor": "https://picsum.photos/seed/balloon/400/300",
+  "Plan Birthday decor": "https://picsum.photos/seed/bday/400/300",
+  "Plan Anniversary decor": "https://picsum.photos/seed/anniversary/400/300",
+  "Water bottles": "https://picsum.photos/seed/waterbottle/400/300",
+  Gifts: "https://picsum.photos/seed/gifts/400/300",
+  "Welcome signboard": "https://picsum.photos/seed/signboard/400/300",
+  "Haldi tray": "https://picsum.photos/seed/haldi/400/300",
+  "Ring platter": "https://picsum.photos/seed/ringplatter/400/300",
+  Varmaala: "https://picsum.photos/seed/varmaala/400/300"
+};
+
+const getItemImage = (item: CartItem) =>
+  item.imageSrc ??
+  PLACEHOLDER_IMAGES[item.productName] ??
+  "https://picsum.photos/seed/" + encodeURIComponent(item.productName) + "/400/300";
+
+const formatPrice = (amount: number) =>
+  new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
+
+const CartItemRow = ({ item }: { item: CartItem }) => {
+  const dispatch = useAppDispatch();
+  const price = item.pricePerDay ?? DEFAULT_PRICE;
+  const lineTotal = price * item.quantity;
+  const imageSrc = getItemImage(item);
+
+  const handleQuantityChange = (delta: number) => {
+    const next = item.quantity + delta;
+    if (next <= 0) {
+      dispatch(removeFromCart(item.id));
+    } else {
+      dispatch(setQuantity({ id: item.id, quantity: next }));
+    }
+  };
+
+  return (
+    <li className="flex gap-4 rounded-2xl border border-base-200 bg-base-100 p-4 shadow-sm">
+      <img
+        src={imageSrc}
+        alt={item.productName}
+        className="h-20 w-20 shrink-0 rounded-xl object-cover bg-base-200 ring-1 ring-base-300/50"
+      />
+      <div className="min-w-0 flex-1">
+        <div className="flex items-start justify-between gap-2">
+          <Text weight="semibold" className="text-base-content">
+            {item.productName}
+          </Text>
+          <Text weight="semibold" variant="primary" className="tabular-nums shrink-0">
+            {formatPrice(lineTotal)}
+          </Text>
+        </div>
+        <Text size="sm" className="mt-0.5 text-base-content/60">
+          {formatPrice(price)} each
+        </Text>
+        <div className="mt-3 flex items-center gap-2">
+          <Button
+            type="button"
+            size="sm"
+            variant="secondary"
+            className="btn-circle min-h-8 h-8 w-8 p-0"
+            aria-label="Decrease quantity"
+            onClick={() => handleQuantityChange(-1)}
+          >
+            <Minus className="h-4 w-4" />
+          </Button>
+          <span className="min-w-7 text-center text-sm font-bold tabular-nums" aria-live="polite">
+            {item.quantity}
+          </span>
+          <Button
+            type="button"
+            size="sm"
+            variant="secondary"
+            className="btn-circle min-h-8 h-8 w-8 p-0"
+            aria-label="Increase quantity"
+            onClick={() => handleQuantityChange(1)}
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            styleType="link"
+            className="btn-circle min-h-8 h-8 w-8 p-0 ml-auto"
+            aria-label="Remove from cart"
+            onClick={() => dispatch(removeFromCart(item.id))}
+          >
+            <Trash2 className="h-5 w-5 text-secondary" />
+          </Button>
+        </div>
+      </div>
+    </li>
+  );
+};
+
+const Checkout = () => {
+  const items = useAppSelector(state => state.cart.items);
+  const total = items.reduce((sum, i) => sum + (i.pricePerDay ?? DEFAULT_PRICE) * i.quantity, 0);
+
+  if (items.length === 0) {
+    return (
+      <div className="mx-auto max-w-lg px-4 py-20 text-center">
+        <div className="rounded-full bg-base-200 p-6 inline-block mb-4">
+          <ShoppingBag className="h-12 w-12 text-base-content" />
+        </div>
+        <Heading level="h4" className="text-2xl text-base-content">
+          Your cart is empty
+        </Heading>
+        <Text className="mt-2 text-base-content/70">Add items from the home page to get started.</Text>
+        <Link to="/" className="btn btn-secondary mt-6">
+          Continue shopping
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-2xl px-4 py-8">
+      <Heading level="h4" className="text-2xl text-base-content">
+        Your cart
+      </Heading>
+      <Text size="sm" className="mt-1 text-base-content/70">
+        {items.length} {items.length === 1 ? "item" : "items"}
+      </Text>
+
+      <ul className="mt-6 space-y-4">
+        {items.map(item => (
+          <CartItemRow key={item.id} item={item} />
+        ))}
+      </ul>
+
+      <div className="mt-6 rounded-2xl border border-base-200 bg-base-100 p-5 shadow-sm">
+        <div className="flex items-center justify-between gap-4">
+          <Text as="span" weight="semibold" className="text-base-content">
+            Total
+          </Text>
+          <Text as="span" size="xl" weight="bold" variant="primary" className="tabular-nums">
+            {formatPrice(total)}
+          </Text>
+        </div>
+      </div>
+
+      <div className="mt-6 flex flex-col gap-1 sm:flex-row sm:justify-between">
+        <Link to="/" className="btn btn-link btn-block sm:btn-wide order-2 sm:order-1">
+          Continue shopping
+        </Link>
+        <Link to="/checkout" className="btn btn-secondary btn-block sm:btn-wide order-1 sm:order-2">
+          Checkout
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default Checkout;

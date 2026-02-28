@@ -1,0 +1,32 @@
+[
+  {
+    "categoryId": "1",
+    "categoryName": "Mattress Set",
+    "categoryDescription": "Mattress Set items",
+    "categorySlug": "mattress-set"
+  },
+  {
+    "categoryId": "2",
+    "categoryName": "Furniture",
+    "categoryDescription": "Furniture items",
+    "categorySlug": "furniture"
+  },
+  {
+    "categoryId": "3",
+    "categoryName": "Appliences",
+    "categoryDescription": "Appliences items",
+    "categorySlug": "appliences"
+  },
+  {
+    "categoryId": "4",
+    "categoryName": "Ready Decor",
+    "categoryDescription": "Ready Decor items",
+    "categorySlug": "ready-decor"
+  },
+  {
+    "categoryId": "5",
+    "categoryName": "Carpet",
+    "categoryDescription": "Carpet items",
+    "categorySlug": "carpet"
+  }
+]
