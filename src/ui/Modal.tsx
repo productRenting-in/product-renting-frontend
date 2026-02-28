@@ -50,7 +50,7 @@ export const Modal = ({
             </button>
           </div>
         )}
-        <div className="py-2">{children}</div>
+        {children}
         {footer && <div className="modal-action">{footer}</div>}
       </div>
       <form method="dialog" className="modal-backdrop">

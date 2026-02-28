@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addToCart, removeFromCart, setQuantity } from "../../app/slices/cartSlice";
 import { Button, Card, Text } from "../../ui";
+import ProductDetailModal from "./ProductDetailModal";
 
 export interface ProductItem {
   productId: string;
@@ -34,6 +36,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ item }: ProductCardProps) => {
   const dispatch = useAppDispatch();
+  const [modalOpen, setModalOpen] = useState(false);
   const id = getItemId(item);
   const imageSrc = getImageSrc(item);
   const description = item.productDescription || DEFAULT_DESCRIPTION;
@@ -106,22 +109,27 @@ const ProductCard = ({ item }: ProductCardProps) => {
   );
 
   return (
-    <Card
-      imageSrc={imageSrc}
-      imageAlt={item.productName}
-      title={item.productName}
-      compact
-      shadow
-      bordered={false}
-      imageClassName="h-44"
-      className="overflow-hidden rounded-2xl transition hover:shadow-xl flex flex-col w-full h-full"
-      bodyClassName="flex flex-col flex-1"
-      actions={cardActions}
-    >
-      <Text size="sm" className="flex-1 text-base-content/80">
-        {description}
-      </Text>
-    </Card>
+    <>
+      <Card
+        imageSrc={imageSrc}
+        imageAlt={item.productName}
+        title={item.productName}
+        compact
+        shadow
+        bordered={false}
+        imageClassName="h-44"
+        className="overflow-hidden rounded-2xl transition hover:shadow-xl flex flex-col w-full h-full cursor-pointer"
+        bodyClassName="flex flex-col flex-1"
+        actions={cardActions}
+        onClick={() => setModalOpen(true)}
+      >
+        <Text size="sm" className="flex-1 text-base-content/80">
+          {description}
+        </Text>
+      </Card>
+
+      <ProductDetailModal item={modalOpen ? item : null} onClose={() => setModalOpen(false)} />
+    </>
   );
 };
 
